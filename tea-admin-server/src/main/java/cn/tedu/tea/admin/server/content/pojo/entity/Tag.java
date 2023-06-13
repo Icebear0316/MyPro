@@ -1,5 +1,9 @@
 package cn.tedu.tea.admin.server.content.pojo.entity;
 
+import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
+
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 /**
@@ -8,7 +12,9 @@ import java.time.LocalDateTime;
  * @author java@tedu.cn
  * @version 0.0.1
  */
-public class Tag {
+@Data
+@TableName("content_tag")
+public class Tag implements Serializable {
     /**
      * 数据ID
      */
