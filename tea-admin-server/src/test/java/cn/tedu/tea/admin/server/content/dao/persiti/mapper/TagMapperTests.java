@@ -3,6 +3,7 @@ package cn.tedu.tea.admin.server.content.dao.persiti.mapper;
 
 import cn.tedu.tea.admin.server.content.dao.persist.mapper.TagMapper;
 import cn.tedu.tea.admin.server.content.pojo.entity.Tag;
+import cn.tedu.tea.admin.server.content.pojo.vo.TagStandardVO;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class TagMapperTests {
     @Test
     void insert() {
         Tag tag = new Tag();
-        tag.setName("测试标签名称998");
+        tag.setName("测试标签名称102");
 
         System.out.println("插入数据之前，参数：" + tag);
         int rows = mapper.insert(tag);
@@ -86,6 +87,29 @@ public class TagMapperTests {
 
         int rows = mapper.update(tag, wrapper);
         System.out.println("修改数据成功，受影响的行数：" + rows);
+    }
+
+    @Test
+    void selectCount() {
+        Integer count = mapper.selectCount(null);
+        System.out.println("统计数据成功，统计结果：" + count);
+    }
+
+    @Test
+    void selectCountByName() {
+        String name = "abcd";
+        QueryWrapper<Tag> wrapper = new QueryWrapper<>();
+        wrapper.eq("name", name);
+
+        Integer count = mapper.selectCount(wrapper);
+        System.out.println("统计数据成功，统计结果：" + count);
+    }
+
+    @Test
+    void getStandardById() {
+        Long id = 6L;
+        TagStandardVO queryResult = mapper.getStandardById(id);
+        System.out.println("根据ID查询数据完成，查询结果：" + queryResult);
     }
 
 }

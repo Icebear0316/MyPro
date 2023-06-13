@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.tedu.tea.admin.server.content.dao.persist.mapper.TagMapper">
+
+    <!-- TagStandardVO getStandardById(Long id); -->
+    <select id="getStandardById" resultMap="StandardResultMap">
+        SELECT
+            id, name, parent_id, enable, sort
+        FROM
+            content_tag
+        WHERE
+            id=#{id}
+    </select>
+
+    <resultMap id="StandardResultMap"
+               type="cn.tedu.tea.admin.server.content.pojo.vo.TagStandardVO">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="parent_id" property="parentId"/>
+        <result column="enable" property="enable"/>
+        <result column="sort" property="sort"/>
+    </resultMap>
+
+</mapper>
