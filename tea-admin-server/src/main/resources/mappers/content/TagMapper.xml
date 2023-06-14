@@ -10,10 +10,11 @@
         FROM
             content_tag
         WHERE
-            id=#{id}
+              id=#{id}
     </select>
 
     <resultMap id="StandardResultMap"
+
                type="cn.tedu.tea.admin.server.content.pojo.vo.TagStandardVO">
         <id column="id" property="id"/>
         <result column="name" property="name"/>
