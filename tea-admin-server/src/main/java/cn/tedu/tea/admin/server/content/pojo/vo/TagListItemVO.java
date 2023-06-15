@@ -8,7 +8,7 @@ import java.io.Serializable;
  * 列表项VO类：内容-标签
  *
  * @author java@tedu.cn
- * @version 0.0.1
+ * @version 1.0
  */
 @Data
 public class TagListItemVO implements Serializable {

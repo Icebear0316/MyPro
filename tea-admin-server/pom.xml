@@ -18,10 +18,10 @@
     </properties>
 
     <dependencies>
-        <!-- Spring Boot的基础依赖项 -->
+        <!-- Spring Boot中的SpringMVC的依赖项 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <!-- Lombok：便捷的编写POJO类 -->
         <dependency>

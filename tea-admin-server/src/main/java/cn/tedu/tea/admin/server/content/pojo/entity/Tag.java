@@ -1,22 +1,21 @@
 package cn.tedu.tea.admin.server.content.pojo.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+
 /**
  * 实体类：内容-标签
  *
  * @author java@tedu.cn
- * @version 0.0.1
+ * @version 1.0
  */
 @Data
 @TableName("content_tag")
 public class Tag implements Serializable {
+
     /**
      * 数据ID
      */
@@ -41,9 +40,12 @@ public class Tag implements Serializable {
     /**
      * 数据创建时间
      */
+    @TableField(fill = FieldFill.INSERT)
     private LocalDateTime gmtCreate;
     /**
      * 数据最后修改时间
      */
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime gmtModified;
+
 }

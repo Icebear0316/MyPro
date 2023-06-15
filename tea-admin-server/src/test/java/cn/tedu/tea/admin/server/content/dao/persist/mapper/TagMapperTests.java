@@ -1,13 +1,11 @@
-package cn.tedu.tea.admin.server.content.dao.persiti.mapper;
+package cn.tedu.tea.admin.server.content.dao.persist.mapper;
 
-
-import cn.tedu.tea.admin.server.content.dao.persist.mapper.TagMapper;
 import cn.tedu.tea.admin.server.content.pojo.entity.Tag;
-import cn.tedu.tea.admin.server.content.pojo.vo.TagStandardVO;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.jdbc.Sql;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,21 +19,26 @@ public class TagMapperTests {
     TagMapper mapper;
 
     @Test
+    @Sql(scripts = "classpath:/sql/truncate_table.sql")
+    @Sql(scripts = "classpath:/sql/truncate_table.sql",
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void insert() {
         Tag tag = new Tag();
-        tag.setName("测试标签名称102");
+        tag.setName("茶叶标签");
 
         System.out.println("插入数据之前，参数：" + tag);
         int rows = mapper.insert(tag);
-        System.out.println("插入数据成功，受影响的行数：" + rows);
+        System.out.println("插入数据完成，受影响的行数：" + rows);
         System.out.println("插入数据之后，参数：" + tag);
     }
 
     @Test
+    @Sql({"classpath:/sql/truncate_table.sql",
+            "classpath:/sql/insert_data.sql"})
     void deleteById() {
         Long id = 1L;
         int rows = mapper.deleteById(id);
-        System.out.println("删除数据成功，受影响的行数：" + rows);
+        System.out.println("删除数据完成，受影响的行数：" + rows);
     }
 
     @Test
@@ -43,7 +46,7 @@ public class TagMapperTests {
         Map<String, Object> map = new HashMap<>();
         map.put("id", 1);
         int rows = mapper.deleteByMap(map);
-        System.out.println("删除数据成功，受影响的行数：" + rows);
+        System.out.println("删除数据完成，受影响的行数：" + rows);
     }
 
     @Test
@@ -51,64 +54,69 @@ public class TagMapperTests {
         QueryWrapper<Tag> wrapper = new QueryWrapper<>();
         wrapper.eq("id", 1);
         int rows = mapper.delete(wrapper);
-        System.out.println("删除数据成功，受影响的行数：" + rows);
+        System.out.println("删除数据完成，受影响的行数：" + rows);
     }
+
     @Test
     void deleteBatchIds() {
         List<Long> idList = new ArrayList<>();
-        idList.add(4L);
-        idList.add(5L);
-        idList.add(6L);
+        idList.add(1L);
+        idList.add(2L);
+        idList.add(3L);
 
         int rows = mapper.deleteBatchIds(idList);
-        System.out.println("删除数据成功，受影响的行数：" + rows);
+        System.out.println("删除数据完成，受影响的行数：" + rows);
     }
 
     @Test
+    @Sql({"classpath:/sql/truncate_table.sql",
+            "classpath:/sql/insert_data.sql"})
     void updateById() {
         Tag tag = new Tag();
         tag.setId(1L);
-        // tag.setName("测试标签名称998");
+        // tag.setName("新-茶叶标签");
         tag.setEnable(1);
-        tag.setSort(198);
+        tag.setSort(98);
 
         int rows = mapper.updateById(tag);
-        System.out.println("修改数据成功，受影响的行数：" + rows);
+        System.out.println("修改数据完成，受影响的行数：" + rows);
     }
 
     @Test
     void update() {
         Tag tag = new Tag();
         tag.setEnable(1);
-        tag.setSort(197);
+        tag.setSort(97);
 
         QueryWrapper<Tag> wrapper = new QueryWrapper<>();
         wrapper.eq("id", 1);
 
         int rows = mapper.update(tag, wrapper);
-        System.out.println("修改数据成功，受影响的行数：" + rows);
+        System.out.println("修改数据完成，受影响的行数：" + rows);
     }
 
     @Test
     void selectCount() {
         Integer count = mapper.selectCount(null);
-        System.out.println("统计数据成功，统计结果：" + count);
+        System.out.println("统计数据完成，统计结果：" + count);
     }
 
     @Test
     void selectCountByName() {
-        String name = "abcd";
+        String name = "茶叶标签";
         QueryWrapper<Tag> wrapper = new QueryWrapper<>();
         wrapper.eq("name", name);
 
         Integer count = mapper.selectCount(wrapper);
-        System.out.println("统计数据成功，统计结果：" + count);
+        System.out.println("统计数据完成，统计结果：" + count);
     }
 
     @Test
+    @Sql({"classpath:/sql/truncate_table.sql",
+            "classpath:/sql/insert_data.sql"})
     void getStandardById() {
-        Long id = 6L;
-        TagStandardVO queryResult = mapper.getStandardById(id);
+        Long id = 1L;
+        Object queryResult = mapper.getStandardById(id);
         System.out.println("根据ID查询数据完成，查询结果：" + queryResult);
     }
 
