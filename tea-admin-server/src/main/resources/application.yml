@@ -24,3 +24,8 @@ spring:
 mybatis-plus:
   # 配置SQL语句的XML文件的位置
   mapper-locations: classpath:mappers/**/*.xml
+
+  # Knife4j配置
+  knife4j:
+    # 开启增强模式
+    enable: true
