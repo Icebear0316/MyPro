@@ -1,6 +1,7 @@
 package cn.tedu.tea.admin.server.content.controller;
 
 
+import cn.tedu.tea.admin.server.common.web.JsonResult;
 import cn.tedu.tea.admin.server.content.pojo.param.TagTypeAddNewParam;
 import cn.tedu.tea.admin.server.content.service.ITagService;
 import lombok.extern.slf4j.Slf4j;
@@ -27,10 +28,10 @@ public class TagController {
     }
 
     @RequestMapping("/add-new")
-    public String addNew(TagTypeAddNewParam tagTypeAddNewParam) {
+    public JsonResult addNew(TagTypeAddNewParam tagTypeAddNewParam) {
         log.debug("开始处理【新增标签类别】的请求，参数：{}", tagTypeAddNewParam);
         tagService.addNew(tagTypeAddNewParam);
-        return "OK";
+        return JsonResult.ok();
     }
 
 }
