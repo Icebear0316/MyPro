@@ -2,6 +2,17 @@
 # 此文件是本项目的主配置文件，所有配置将被应用 #
 # ####################################### #
 
+# 服务器的配置
+server:
+  # Servlet（Java用于处理请求的组件）的配置
+  servlet:
+    # 编码配置
+    encoding:
+      # 强制使用指定的编码
+      force: true
+      # 字符集
+      charset: UTF-8
+
 # Spring的配置
 spring:
   # Profile的配置

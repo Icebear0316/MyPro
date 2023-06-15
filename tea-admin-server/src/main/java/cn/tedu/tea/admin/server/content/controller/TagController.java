@@ -1,6 +1,5 @@
 package cn.tedu.tea.admin.server.content.controller;
 
-
 import cn.tedu.tea.admin.server.common.web.JsonResult;
 import cn.tedu.tea.admin.server.content.pojo.param.TagTypeAddNewParam;
 import cn.tedu.tea.admin.server.content.service.ITagService;

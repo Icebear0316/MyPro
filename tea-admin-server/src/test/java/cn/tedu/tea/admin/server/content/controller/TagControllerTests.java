@@ -4,9 +4,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.TestComponent;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
@@ -21,7 +23,8 @@ public class TagControllerTests {
     // MockMvc RequestBuilder s
 
     @Test
-    @Sql(scripts = "classpath:/sql/truncate_table.sql")
+    @Sql(scripts = {"classpath:/sql/truncate_table.sql",
+            "classpath:/sql/insert_data.sql"})
     @Sql(scripts = "classpath:/sql/truncate_table.sql",
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void addNew() throws Throwable {
@@ -37,7 +40,6 @@ public class TagControllerTests {
                 .param("sort", sort)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(MockMvcResultHandlers.print());
-
     }
 
 }

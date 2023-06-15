@@ -1,5 +1,6 @@
 package cn.tedu.tea.admin.server.common.web;
 
+import cn.tedu.tea.admin.server.common.ex.ServiceException;
 import lombok.Data;
 
 /**
@@ -27,6 +28,13 @@ public class JsonResult {
     public static JsonResult ok() {
         JsonResult jsonResult = new JsonResult();
         jsonResult.setState(ServiceCode.OK.getValue());
+        return jsonResult;
+    }
+
+    public static JsonResult fail(ServiceException e) {
+        JsonResult jsonResult = new JsonResult();
+        jsonResult.setState(e.getServiceCode().getValue());
+        jsonResult.setMessage(e.getMessage());
         return jsonResult;
     }
 
