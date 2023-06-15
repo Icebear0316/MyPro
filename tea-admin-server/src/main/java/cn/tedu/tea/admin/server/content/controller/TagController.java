@@ -8,6 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * 处理标签相关请求的控制器类
+ *
+ * @author java@tedu.cn
+ * @version 1.0
+ */
 @Slf4j
 @RestController
 @RequestMapping("/content/tags")
