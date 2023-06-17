@@ -30,3 +30,10 @@ logging:
   level:
     # 某根包（配置将应用于此包及子孙包）的显示级别
     cn.tedu.tea: trace
+
+# 学茶商城的自定义配置
+tea-store:
+  # 数据访问的相关配置
+  dao:
+    # 查询数据时，默认的每页记录数，建议值为10~30之间
+    default-query-page-size: 5

@@ -18,7 +18,6 @@ public class TagRepositoryTests {
     ITagRepository repository;
 
     @Test
-
     void insert() {
         Tag tag = new Tag();
         tag.setName("茶叶标签");

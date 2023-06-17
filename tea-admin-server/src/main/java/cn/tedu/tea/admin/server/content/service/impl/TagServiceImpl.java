@@ -1,14 +1,17 @@
 package cn.tedu.tea.admin.server.content.service.impl;
 
 import cn.tedu.tea.admin.server.common.ex.ServiceException;
+import cn.tedu.tea.admin.server.common.pojo.vo.PageData;
 import cn.tedu.tea.admin.server.common.web.ServiceCode;
 import cn.tedu.tea.admin.server.content.dao.persist.repository.ITagRepository;
 import cn.tedu.tea.admin.server.content.pojo.entity.Tag;
 import cn.tedu.tea.admin.server.content.pojo.param.TagTypeAddNewParam;
+import cn.tedu.tea.admin.server.content.pojo.vo.TagTypeListItemVO;
 import cn.tedu.tea.admin.server.content.service.ITagService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 /**
@@ -21,6 +24,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class TagServiceImpl implements ITagService {
 
+    @Value("${tea-store.dao.default-query-page-size}")
+    private Integer defaultQueryPageSize;
     @Autowired
     private ITagRepository tagRepository;
 
@@ -43,6 +48,20 @@ public class TagServiceImpl implements ITagService {
         BeanUtils.copyProperties(tagTypeAddNewParam, tag);
         tag.setParentId(0L);
         tagRepository.insert(tag);
+    }
+
+    @Override
+    public PageData<TagTypeListItemVO> listTagType(Integer pageNum) {
+        log.debug("开始处理【查询标签类别列表】业务，页码：{}", pageNum);
+        PageData<TagTypeListItemVO> pageData = tagRepository.listTagType(pageNum, defaultQueryPageSize);
+        return pageData;
+    }
+
+    @Override
+    public PageData<TagTypeListItemVO> listTagType(Integer pageNum, Integer pageSize) {
+        log.debug("开始处理【查询标签类别列表】业务，页码：{}，每页记录数：{}", pageNum, pageSize);
+        PageData<TagTypeListItemVO> pageData = tagRepository.listTagType(pageNum, pageSize);
+        return pageData;
     }
 
 }
