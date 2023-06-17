@@ -5,8 +5,6 @@ import cn.tedu.tea.admin.server.content.pojo.entity.Article;
 /**
  * 处理文章数据的存储库接口
  *
- * @author java@tedu.cn
- * @version 1.0
  */
 public interface IArticleRepository {
 

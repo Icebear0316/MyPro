@@ -1,15 +1,16 @@
 package cn.tedu.tea.admin.server.common.web;
 
 import cn.tedu.tea.admin.server.common.ex.ServiceException;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 /**
  * 服务器端的统一响应类型
  *
- * @author java@tedu.cn
- * @version 1.0
+ *
  */
 @Data
+@JsonInclude()
 public class JsonResult {
 
     /**
@@ -47,3 +48,8 @@ public class JsonResult {
     }
 
 }
+
+
+
+
+

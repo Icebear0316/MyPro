@@ -5,9 +5,6 @@ import cn.tedu.tea.admin.server.content.pojo.param.TagTypeAddNewParam;
 
 /**
  * 处理类别数据的业务接口
- *
- * @author java@tedu.cn
- * @version 1.0
  */
 public interface ICategoryService {
 

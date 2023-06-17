@@ -9,8 +9,6 @@ import java.time.LocalDateTime;
 /**
  * 实体类：内容-文章详情
  *
- * @author java@tedu.cn
- * @version 0.0.1
  */
 @Data
 @TableName("content_article_detail")

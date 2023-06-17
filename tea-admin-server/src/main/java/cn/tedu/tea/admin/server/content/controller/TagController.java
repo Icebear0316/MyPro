@@ -10,14 +10,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 处理标签相关请求的控制器类
  *
- * @author java@tedu.cn
- * @version 1.0
  */
 @Slf4j
 @RestController
@@ -32,6 +31,8 @@ public class TagController {
         log.info("创建控制器对象：TagController");
     }
 
+    // 添加@RequestBody：接收对象参数
+    // 不添加@RequestBody：接收FormData参数
     @ApiOperation("新增标签类别")
     @ApiOperationSupport(order = 100)
     @PostMapping("/add-new")

@@ -13,15 +13,15 @@ import java.util.List;
 import java.util.Map;
 
 @SpringBootTest
+@Sql(scripts = {"classpath:/sql/truncate_table.sql", "classpath:/sql/insert_data.sql"})
+@Sql(scripts = {"classpath:/sql/truncate_table.sql", "classpath:/sql/insert_data.sql"},
+        executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 public class TagMapperTests {
 
     @Autowired
     TagMapper mapper;
 
     @Test
-    @Sql(scripts = "classpath:/sql/truncate_table.sql")
-    @Sql(scripts = "classpath:/sql/truncate_table.sql",
-            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void insert() {
         Tag tag = new Tag();
         tag.setName("茶叶标签");
@@ -33,8 +33,6 @@ public class TagMapperTests {
     }
 
     @Test
-    @Sql({"classpath:/sql/truncate_table.sql",
-            "classpath:/sql/insert_data.sql"})
     void deleteById() {
         Long id = 1L;
         int rows = mapper.deleteById(id);
@@ -69,8 +67,6 @@ public class TagMapperTests {
     }
 
     @Test
-    @Sql({"classpath:/sql/truncate_table.sql",
-            "classpath:/sql/insert_data.sql"})
     void updateById() {
         Tag tag = new Tag();
         tag.setId(1L);
@@ -112,12 +108,19 @@ public class TagMapperTests {
     }
 
     @Test
-    @Sql({"classpath:/sql/truncate_table.sql",
-            "classpath:/sql/insert_data.sql"})
     void getStandardById() {
         Long id = 1L;
         Object queryResult = mapper.getStandardById(id);
         System.out.println("根据ID查询数据完成，查询结果：" + queryResult);
+    }
+
+    @Test
+    void listTagType() {
+        List<?> list = mapper.listTagType();
+        System.out.println("查询列表完成，列表项的数量：" + list.size());
+        for (Object item : list) {
+            System.out.println("列表项：" + item);
+        }
     }
 
 }

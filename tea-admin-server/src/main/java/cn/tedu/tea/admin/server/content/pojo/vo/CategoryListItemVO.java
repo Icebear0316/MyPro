@@ -7,8 +7,6 @@ import java.io.Serializable;
 /**
  * 列表项VO类：内容-类别
  *
- * @author java@tedu.cn
- * @version 1.0
  */
 @Data
 public class CategoryListItemVO implements Serializable {

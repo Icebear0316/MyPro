@@ -7,8 +7,6 @@ import java.io.Serializable;
 /**
  * 标准VO类：内容-顶踩日志
  *
- * @author java@tedu.cn
- * @version 1.0
  */
 @Data
 public class UpDownLogStandardVO implements Serializable {

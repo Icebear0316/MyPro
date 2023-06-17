@@ -7,8 +7,6 @@ import org.springframework.context.annotation.Configuration;
 /**
  * MyBatis的配置类
  *
- * @author java@tedu.cn
- * @version 1.0
  */
 @Slf4j
 @Configuration

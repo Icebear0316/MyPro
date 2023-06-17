@@ -7,8 +7,6 @@ import java.io.Serializable;
 /**
  * 新增评论的参数类
  *
- * @author java@tedu.cn
- * @version 1.0
  */
 @Data
 public class CommentAddNewParam implements Serializable {

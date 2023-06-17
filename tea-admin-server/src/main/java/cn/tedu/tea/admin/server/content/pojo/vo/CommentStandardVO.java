@@ -7,8 +7,6 @@ import java.io.Serializable;
 /**
  * 标准VO类：内容-评论
  *
- * @author java@tedu.cn
- * @version 1.0
  */
 @Data
 public class CommentStandardVO implements Serializable {

@@ -5,11 +5,11 @@ import lombok.Data;
 import java.io.Serializable;
 
 /**
- * 列表项VO类：内容-标签
+ * 列表项VO类：内容-标签类别
  *
  */
 @Data
-public class TagListItemVO implements Serializable {
+public class TagTypeListItemVO implements Serializable {
 
     /**
      * 数据ID
@@ -19,10 +19,6 @@ public class TagListItemVO implements Serializable {
      * 标签名称
      */
     private String name;
-    /**
-     * 父级ID，为0的是标签分类，不为0的是标签
-     */
-    private Long parentId;
     /**
      * 是否启用，1=启用，0=未启用
      */

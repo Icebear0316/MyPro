@@ -6,8 +6,6 @@ import cn.tedu.tea.admin.server.content.pojo.entity.Tag;
 /**
  * 处理类别数据的存储库接口
  *
- * @author java@tedu.cn
- * @version 1.0
  */
 public interface ICategoryRepository {
 
