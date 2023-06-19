@@ -83,7 +83,38 @@ export default {
     },
     // 弹出删除确认框
     openDeleteConfirm(tableItem) {
-      alert('即将删除【' + tableItem.id + " - " + tableItem.name + '】，还没做！');
+      let message = '此操作将永久删除【' + tableItem.name + '】标签，是否继续？';
+      this.$confirm(message, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.handleDelete(tableItem);
+      }).catch(() => {
+      });
+    },
+    // 执行删除
+    handleDelete(tableItem) {
+      let url = 'http://localhost:9080/content/tags/' + tableItem.id + '/delete';
+      console.log('url = ' + url);
+
+      this.axios.post(url).then((response) => {
+        let jsonResult = response.data;
+        if (jsonResult.state == 20000) {
+          this.$message({
+            message: '删除标签成功！',
+            type: 'success'
+          });
+          this.loadTagList();
+        } else {
+          let title = '操作失败';
+          this.$alert(jsonResult.message, title, {
+            confirmButtonText: '确定',
+            callback: action => {
+            }
+          });
+        }
+      });
     },
     // 加载标签列表
     loadTagList() {
