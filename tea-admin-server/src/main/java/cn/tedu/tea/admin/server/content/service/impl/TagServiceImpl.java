@@ -7,6 +7,7 @@ import cn.tedu.tea.admin.server.content.dao.persist.repository.ITagRepository;
 import cn.tedu.tea.admin.server.content.pojo.entity.Tag;
 import cn.tedu.tea.admin.server.content.pojo.param.TagAddNewParam;
 import cn.tedu.tea.admin.server.content.pojo.param.TagTypeAddNewParam;
+import cn.tedu.tea.admin.server.content.pojo.param.TagUpdateInfoParam;
 import cn.tedu.tea.admin.server.content.pojo.vo.TagListItemVO;
 import cn.tedu.tea.admin.server.content.pojo.vo.TagStandardVO;
 import cn.tedu.tea.admin.server.content.pojo.vo.TagTypeListItemVO;
@@ -85,6 +86,43 @@ public class TagServiceImpl implements ITagService {
         }
 
         tagRepository.deleteById(id);
+    }
+
+    @Override
+    public void updateInfoById(TagUpdateInfoParam tagUpdateInfoParam) {
+        log.debug("开始处理【修改标签】的业务，参数：{}", tagUpdateInfoParam);
+
+        Long id = tagUpdateInfoParam.getId();
+        TagStandardVO currentTag = tagRepository.getStandardById(id);
+        if (currentTag == null || currentTag.getParentId() == 0) {
+            String message = "修改标签失败，尝试修改的标签数据不存在！";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERROR_NOT_FOUND, message);
+        }
+
+        String name = tagUpdateInfoParam.getName();
+        int count = tagRepository.countByNameAndNotId(id, name);
+        if (count > 0) {
+            String message = "修改标签失败，标签名称已经被占用！";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERROR_CONFLICT, message);
+        }
+
+        Tag tag = new Tag();
+        BeanUtils.copyProperties(tagUpdateInfoParam, tag);
+        tagRepository.updateById(tag);
+    }
+
+    @Override
+    public TagStandardVO getStandardById(Long id) {
+        log.debug("开始处理【根据ID查询标签】业务，参数：{}", id);
+        TagStandardVO currentTag = tagRepository.getStandardById(id);
+        if (currentTag == null || currentTag.getParentId() == 0) {
+            String message = "获取标签详情失败，尝试访问的标签数据不存在！";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERROR_NOT_FOUND, message);
+        }
+        return currentTag;
     }
 
     @Override

@@ -9,14 +9,21 @@ import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 
 /**
- * 新增标签的参数类
+ * 修改标签的参数类
  *
  * @author java@tedu.cn
  * @version 1.0
  */
 @Data
-public class TagAddNewParam implements Serializable {
+public class TagUpdateInfoParam implements Serializable {
 
+    /**
+     * 数据ID
+     */
+    @NotNull(message = "请提交标签ID")
+    @Range(min = 1, message = "请提交正确的标签ID值")
+    @ApiModelProperty(value = "标签ID", required = true, example = "1")
+    private Long id;
     /**
      * 标签名称
      */
@@ -32,13 +39,6 @@ public class TagAddNewParam implements Serializable {
     @Range(min = 1, message = "请提交正确的所属标签类别")
     @ApiModelProperty(value = "所属标签类别", required = true, example = "1")
     private Long typeId;
-    /**
-     * 是否启用，1=启用，0=未启用
-     */
-    @NotNull(message = "请提交标签是否启用")
-    @Range(max = 1, message = "是否启用的值必须是0或1")
-    @ApiModelProperty(value = "是否启用，1=启用，0=未启用", required = true, example = "1")
-    private Integer enable;
     /**
      * 排序序号
      */

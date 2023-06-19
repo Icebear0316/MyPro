@@ -4,6 +4,7 @@ import cn.tedu.tea.admin.server.common.ex.ServiceException;
 import cn.tedu.tea.admin.server.common.pojo.vo.PageData;
 import cn.tedu.tea.admin.server.content.pojo.param.TagAddNewParam;
 import cn.tedu.tea.admin.server.content.pojo.param.TagTypeAddNewParam;
+import cn.tedu.tea.admin.server.content.pojo.param.TagUpdateInfoParam;
 import cn.tedu.tea.admin.server.content.pojo.vo.TagListItemVO;
 import cn.tedu.tea.admin.server.content.pojo.vo.TagTypeListItemVO;
 import org.junit.jupiter.api.Test;
@@ -66,6 +67,34 @@ public class TagServiceTests {
         }
     }
 
+    @Test
+    void updateInfoById() {
+        TagUpdateInfoParam tagUpdateInfoParam = new TagUpdateInfoParam();
+        tagUpdateInfoParam.setId(8L);
+        tagUpdateInfoParam.setName("绿茶");
+        tagUpdateInfoParam.setSort(88);
+
+        try {
+            service.updateInfoById(tagUpdateInfoParam);
+            System.out.println("修改数据完成！");
+        } catch (ServiceException e) {
+            System.out.println(e.getServiceCode().getValue());
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @Test
+    void getStandardById() {
+        Long id = 10L;
+
+        try {
+            Object queryResult = service.getStandardById(id);
+            System.out.println("根据ID查询数据完成，结果：" + queryResult);
+        } catch (ServiceException e) {
+            System.out.println(e.getServiceCode().getValue());
+            System.out.println(e.getMessage());
+        }
+    }
 
     @Test
     void listTagType1() {

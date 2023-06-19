@@ -11,7 +11,7 @@
 
     <!-- 表单 -->
     <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="120px" class="demo-ruleForm">
-      <el-form-item label="标签类别" prop="name">
+      <el-form-item label="标签类别" prop="typeId">
         <el-select v-model="ruleForm.typeId" placeholder="请选择">
           <el-option
               v-for="item in tagTypeOptions"

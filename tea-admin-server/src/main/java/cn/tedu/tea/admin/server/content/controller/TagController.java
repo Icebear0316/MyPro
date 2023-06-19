@@ -4,7 +4,9 @@ import cn.tedu.tea.admin.server.common.pojo.vo.PageData;
 import cn.tedu.tea.admin.server.common.web.JsonResult;
 import cn.tedu.tea.admin.server.content.pojo.param.TagAddNewParam;
 import cn.tedu.tea.admin.server.content.pojo.param.TagTypeAddNewParam;
+import cn.tedu.tea.admin.server.content.pojo.param.TagUpdateInfoParam;
 import cn.tedu.tea.admin.server.content.pojo.vo.TagListItemVO;
+import cn.tedu.tea.admin.server.content.pojo.vo.TagStandardVO;
 import cn.tedu.tea.admin.server.content.pojo.vo.TagTypeListItemVO;
 import cn.tedu.tea.admin.server.content.service.ITagService;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
@@ -66,6 +68,27 @@ public class TagController {
         log.debug("开始处理【删除标签】的请求，参数：{}", id);
         tagService.delete(id);
         return JsonResult.ok();
+    }
+
+    @ApiOperation("修改标签")
+    @ApiOperationSupport(order = 300)
+    @PostMapping("/{id:[0-9]+}/update/info")
+    public JsonResult updateInfoById(@Validated TagUpdateInfoParam updateInfoParam) {
+        log.debug("开始处理【修改标签】的请求，参数：{}", updateInfoParam);
+        tagService.updateInfoById(updateInfoParam);
+        return JsonResult.ok();
+    }
+
+    @ApiOperation("根据ID查询标签")
+    @ApiOperationSupport(order = 410)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "标签ID", required = true, dataType = "long")
+    })
+    @GetMapping("/{id:[0-9]+}")
+    public JsonResult getStandardById(@PathVariable @Range(min = 1, message = "获取标签详情失败，请提交合法的ID值！") Long id) {
+        log.debug("开始处理【根据ID查询标签】的请求，参数：{}", id);
+        TagStandardVO tag = tagService.getStandardById(id);
+        return JsonResult.ok(tag);
     }
 
     @ApiOperation("查询标签类别列表")

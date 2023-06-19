@@ -19,6 +19,7 @@
       </el-table-column>
       <el-table-column prop="name" label="名称" header-align="center"
                        show-overflow-tooltip></el-table-column>
+      <el-table-column prop="sort" label="排序序号" width="120" align="center"></el-table-column>
       <el-table-column label="启用状态" width="120" align="center">
         <template slot-scope="scope">
           <el-switch
@@ -52,6 +53,32 @@
           :total="total">
       </el-pagination>
     </div>
+
+    <!-- 修改数据的表单 -->
+    <el-dialog title="编辑标签数据" :visible.sync="editFormVisible">
+      <el-form :model="editForm" :rules="editRules" label-width="120px">
+        <el-form-item label="标签类别">
+          <el-select v-model="editForm.typeId" placeholder="请选择">
+            <el-option
+                v-for="item in tagTypeOptions"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="标签名称" prop="name">
+          <el-input v-model="editForm.name"></el-input>
+        </el-form-item>
+        <el-form-item label="排序序号" prop="sort">
+          <el-input v-model="editForm.sort"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="editFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="editFormVisible = false">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -62,12 +89,57 @@ export default {
       // 表格数据
       tableData: [],
       // 分页相关数据
-      currentPage: 0,
+      currentPage: this.$router.currentRoute.query.page ? parseInt(this.$router.currentRoute.query.page) : 1,
       pageSize: 20,
       total: 0,
+      // 标签类别的下拉菜单的选择列表
+      tagTypeOptions: [],
+      // 编辑对话框相关数据
+      editFormVisible: false,
+      editForm: {
+        typeId: '',
+        name: '',
+        sort: ''
+      },
+      // 编辑表单规则
+      editRules: {
+        typeId: [
+          {required: true, message: '请选择标签类别', trigger: 'blur'}
+        ],
+        name: [
+          {required: true, message: '请输入标签名称', trigger: 'blur'},
+          {pattern: /^[a-zA-Z\u4e00-\u9fa5]{2,10}$/, message: '标签必须是2~10长度的字符组成，且不允许使用标点符号', trigger: 'blur'}
+        ],
+        sort: [
+          {required: true, message: '请输入排序序号', trigger: 'blur'},
+          {pattern: /^(\d{1}|[1-9]{1}[0-9]{1})$/, message: '排序序号必须是0~99之间的值', trigger: 'blur'}
+        ]
+      }
     };
   },
   methods: {
+    // 加载标签类别列表
+    loadTagTypeList() {
+      let url = 'http://localhost:9080/content/tags/type/list?queryType=all';
+      console.log('url = ' + url);
+
+      this.axios.get(url).then((response) => {
+        let jsonResult = response.data;
+        if (jsonResult.state == 20000) {
+          this.tagTypeOptions = jsonResult.data.list;
+          if (this.tagTypeOptions && this.tagTypeOptions[0]) {
+            this.editForm.typeId = this.tagTypeOptions[0].id;
+          }
+        } else {
+          let title = '操作失败';
+          this.$alert(jsonResult.message, title, {
+            confirmButtonText: '确定',
+            callback: action => {
+            }
+          });
+        }
+      });
+    },
     // 切换分页
     changePage(page) {
       this.$router.replace('?page=' + page);
@@ -79,7 +151,25 @@ export default {
     },
     // 弹出修改对话框
     openEditDialog(tableItem) {
-      alert('即将编辑【' + tableItem.id + " - " + tableItem.name + '】，还没做！');
+      let url = 'http://localhost:9080/content/tags/' + tableItem.id;
+      console.log('url = ' + url);
+
+      this.axios.get(url).then((response) => {
+        let jsonResult = response.data;
+        if (jsonResult.state == 20000) {
+          this.editForm = jsonResult.data;
+          this.editForm.typeId = jsonResult.data.parentId;
+          this.editFormVisible = true;
+        } else {
+          let title = '操作失败';
+          this.$alert(jsonResult.message, title, {
+            confirmButtonText: '确定',
+            callback: action => {
+              this.loadTagList();
+            }
+          });
+        }
+      });
     },
     // 弹出删除确认框
     openDeleteConfirm(tableItem) {
@@ -145,6 +235,7 @@ export default {
     }
   },
   mounted() {
+    this.loadTagTypeList();
     this.loadTagList();
   }
 }

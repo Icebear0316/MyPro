@@ -45,10 +45,24 @@ public class TagRepositoryImpl implements ITagRepository {
     }
 
     @Override
+    public int updateById(Tag tag) {
+        log.debug("开始执行【根据ID修改标签数据】，参数：{}", tag);
+        return tagMapper.updateById(tag);
+    }
+
+    @Override
     public int countByName(String name) {
         log.debug("开始执行【根据名称\"{}\"统计标签表中数据的数量】，参数：", name);
         QueryWrapper<Tag> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("name", name);
+        return tagMapper.selectCount(queryWrapper);
+    }
+
+    @Override
+    public int countByNameAndNotId(Long id, String name) {
+        log.debug("开始执行【统计匹配名称查不匹配ID的标签数量】，ID：{}，名称：{}", id, name);
+        QueryWrapper<Tag> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("name", name).ne("id", id);
         return tagMapper.selectCount(queryWrapper);
     }
 

@@ -31,6 +31,17 @@ public class TagRepositoryTests {
     }
 
     @Test
+    void updateById() {
+        Tag tag = new Tag();
+        tag.setId(1L);
+        tag.setName("新茶叶标签");
+        tag.setSort(198);
+
+        int rows = repository.updateById(tag);
+        System.out.println("修改数据完成，受影响的行数：" + rows);
+    }
+
+    @Test
     void deleteById() {
         Long id = 1L;
         int rows = repository.deleteById(id);
@@ -41,6 +52,14 @@ public class TagRepositoryTests {
     void countByName() {
         String name = "茶叶标签";
         int count = repository.countByName(name);
+        System.out.println("统计完成，结果：" + count);
+    }
+
+    @Test
+    void countByNameAndNotId() {
+        Long id = 8L;
+        String name = "新绿茶";
+        int count = repository.countByNameAndNotId(id, name);
         System.out.println("统计完成，结果：" + count);
     }
 

@@ -6,8 +6,6 @@ import cn.tedu.tea.admin.server.content.pojo.vo.TagListItemVO;
 import cn.tedu.tea.admin.server.content.pojo.vo.TagStandardVO;
 import cn.tedu.tea.admin.server.content.pojo.vo.TagTypeListItemVO;
 
-import java.io.Serializable;
-
 /**
  * 处理标签数据的存储库接口
  *
@@ -17,6 +15,8 @@ public interface ITagRepository {
     /**
      * 插入标签数据
      *
+     * @param tag 标签数据
+     * @return 受影响的行数
      */
     int insert(Tag tag);
 
@@ -29,12 +29,29 @@ public interface ITagRepository {
     int deleteById(Long id);
 
     /**
+     * 根据ID修改标签数据
+     *
+     * @param tag 封装了被修改数据的ID和新数据的对象
+     * @return 受影响的行数
+     */
+    int updateById(Tag tag);
+
+    /**
      * 根据名称统计标签数量，通常用于检查名称是否被占用
      *
      * @param name 标签名称
      * @return 匹配此标签名称的数据的数量
      */
     int countByName(String name);
+
+    /**
+     * 统计匹配名称查不匹配ID的标签数量，通常用于修改数据时判断名称是否被占用
+     *
+     * @param id   标签ID
+     * @param name 标签数量
+     * @return 匹配的标签的数量
+     */
+    int countByNameAndNotId(Long id, String name);
 
     /**
      * 根据ID查询标签

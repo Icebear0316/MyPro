@@ -58,7 +58,7 @@ export default {
       // 表格数据
       tableData: [],
       // 分页相关数据
-      currentPage: 0,
+      currentPage: this.$router.currentRoute.query.page ? parseInt(this.$router.currentRoute.query.page) : 1,
       pageSize: 0,
       total: 0
     }

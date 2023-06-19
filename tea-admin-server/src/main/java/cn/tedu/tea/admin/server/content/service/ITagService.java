@@ -3,7 +3,9 @@ package cn.tedu.tea.admin.server.content.service;
 import cn.tedu.tea.admin.server.common.pojo.vo.PageData;
 import cn.tedu.tea.admin.server.content.pojo.param.TagAddNewParam;
 import cn.tedu.tea.admin.server.content.pojo.param.TagTypeAddNewParam;
+import cn.tedu.tea.admin.server.content.pojo.param.TagUpdateInfoParam;
 import cn.tedu.tea.admin.server.content.pojo.vo.TagListItemVO;
+import cn.tedu.tea.admin.server.content.pojo.vo.TagStandardVO;
 import cn.tedu.tea.admin.server.content.pojo.vo.TagTypeListItemVO;
 
 /**
@@ -28,14 +30,30 @@ public interface ITagService {
 
     /**
      * 删除标签
-     * @param id
+     *
+     * @param id 尝试删除的标签的ID
      */
     void delete(Long id);
 
     /**
+     * 修改标签
+     *
+     * @param tagUpdateInfoParam 封装了被修改数据的ID和新数据的对象
+     */
+    void updateInfoById(TagUpdateInfoParam tagUpdateInfoParam);
+
+    /**
+     * 根据ID查询标签
+     *
+     * @param id 标签ID
+     * @return 匹配的标签，如果没有匹配的数据，则返回null
+     */
+    TagStandardVO getStandardById(Long id);
+
+    /**
      * 查询标签类别列表，将使用默认的“每页记录数”
      *
-     * @param pageNum  页码
+     * @param pageNum 页码
      * @return 标签类别列表的分页数据
      */
     PageData<TagTypeListItemVO> listTagType(Integer pageNum);
