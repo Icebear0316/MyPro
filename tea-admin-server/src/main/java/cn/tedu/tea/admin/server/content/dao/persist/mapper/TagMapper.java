@@ -1,6 +1,7 @@
 package cn.tedu.tea.admin.server.content.dao.persist.mapper;
 
 import cn.tedu.tea.admin.server.content.pojo.entity.Tag;
+import cn.tedu.tea.admin.server.content.pojo.vo.TagListItemVO;
 import cn.tedu.tea.admin.server.content.pojo.vo.TagStandardVO;
 import cn.tedu.tea.admin.server.content.pojo.vo.TagTypeListItemVO;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
@@ -20,6 +21,11 @@ public interface TagMapper extends BaseMapper<Tag> {
      */
     List<TagTypeListItemVO> listTagType();
 
-    // name, parent_id, enable, sort
-    // xx list(Long parentId);
+    /**
+     * 查询标签列表
+     *
+     * @return 标签列表
+     */
+    List<TagListItemVO> list();
+
 }

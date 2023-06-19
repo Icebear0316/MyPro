@@ -25,6 +25,20 @@
             sort DESC, id DESC
     </select>
 
+    <!-- List<TagListItemVO> list(); -->
+    <select id="list" resultMap="TagListItemResultMap">
+        SELECT
+            id,
+            parent_id AS typeId,
+            (SELECT name FROM content_tag WHERE id=typeId) AS typeName,
+            name, enable, sort
+        FROM
+            content_tag
+        WHERE
+            parent_id!=0
+        ORDER BY enable DESC, sort DESC, id DESC
+    </select>
+
     <resultMap id="StandardResultMap"
                type="cn.tedu.tea.admin.server.content.pojo.vo.TagStandardVO">
         <id column="id" property="id"/>
@@ -37,6 +51,16 @@
     <resultMap id="TagTypeListItemResultMap"
                type="cn.tedu.tea.admin.server.content.pojo.vo.TagTypeListItemVO">
         <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="enable" property="enable"/>
+        <result column="sort" property="sort"/>
+    </resultMap>
+
+    <resultMap id="TagListItemResultMap"
+               type="cn.tedu.tea.admin.server.content.pojo.vo.TagListItemVO">
+        <id column="id" property="id"/>
+        <result column="typeId" property="typeId"/>
+        <result column="typeName" property="typeName"/>
         <result column="name" property="name"/>
         <result column="enable" property="enable"/>
         <result column="sort" property="sort"/>

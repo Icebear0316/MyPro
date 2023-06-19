@@ -20,9 +20,13 @@ public class TagListItemVO implements Serializable {
      */
     private String name;
     /**
-     * 父级ID，为0的是标签分类，不为0的是标签
+     * 标签类别ID
      */
-    private Long parentId;
+    private Long typeId;
+    /**
+     * 标签类别名称
+     */
+    private String typeName;
     /**
      * 是否启用，1=启用，0=未启用
      */

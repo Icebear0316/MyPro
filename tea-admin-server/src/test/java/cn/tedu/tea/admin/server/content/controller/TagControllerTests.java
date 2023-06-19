@@ -14,21 +14,17 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@Sql(scripts = {"classpath:/sql/truncate_table.sql", "classpath:/sql/insert_data.sql"})
+@Sql(scripts = {"classpath:/sql/truncate_table.sql", "classpath:/sql/insert_data.sql"},
+        executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 public class TagControllerTests {
 
     @Autowired
     MockMvc mockMvc; // axios
 
-    // RequestBuilder
-    // MockMvc RequestBuilder s
-
     @Test
-    @Sql(scripts = {"classpath:/sql/truncate_table.sql",
-            "classpath:/sql/insert_data.sql"})
-    @Sql(scripts = "classpath:/sql/truncate_table.sql",
-            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-    void addNew() throws Throwable {
-        String url = "/content/tags/add-new";
+    void addNewTagType() throws Throwable {
+        String url = "/content/tags/type/add-new";
 
         String name = "茶叶标签";
         String enable = "1";
@@ -38,6 +34,42 @@ public class TagControllerTests {
                 .param("name", name)
                 .param("enable", enable)
                 .param("sort", sort)
+                .accept(MediaType.APPLICATION_JSON))
+                .andDo(MockMvcResultHandlers.print());
+    }
+
+    @Test
+    void addNewTag() throws Throwable {
+        String url = "/content/tags/add-new";
+
+        String typeId = "1";
+        String name = "新茶";
+        String enable = "1";
+        String sort = "88";
+
+        mockMvc.perform(MockMvcRequestBuilders.post(url)
+                .param("typeId", typeId)
+                .param("name", name)
+                .param("enable", enable)
+                .param("sort", sort)
+                .accept(MediaType.APPLICATION_JSON))
+                .andDo(MockMvcResultHandlers.print());
+    }
+
+    @Test
+    void listTagType() throws Throwable {
+        String url = "/content/tags/type/list";
+
+        mockMvc.perform(MockMvcRequestBuilders.get(url)
+                .accept(MediaType.APPLICATION_JSON))
+                .andDo(MockMvcResultHandlers.print());
+    }
+
+    @Test
+    void list() throws Throwable {
+        String url = "/content/tags";
+
+        mockMvc.perform(MockMvcRequestBuilders.get(url)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(MockMvcResultHandlers.print());
     }

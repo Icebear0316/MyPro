@@ -8,6 +8,10 @@ import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import java.util.Set;
+
 /**
  * 全局异常处理器
  */
@@ -45,6 +49,18 @@ public class GlobalExceptionHandler {
         stringBuilder.append("！");
         String message = stringBuilder.toString();
         log.warn(message);
+        return JsonResult.fail(ServiceCode.ERROR_BAD_REQUEST, message);
+    }
+
+    @ExceptionHandler
+    public JsonResult handleConstraintViolationException(ConstraintViolationException e) {
+        log.debug("全局异常处理器开始处理ConstraintViolationException");
+        StringBuilder stringBuilder = new StringBuilder();
+        Set<ConstraintViolation<?>> constraintViolations = e.getConstraintViolations();
+        for (ConstraintViolation<?> constraintViolation : constraintViolations) {
+            stringBuilder.append(constraintViolation.getMessage());
+        }
+        String message = stringBuilder.toString();
         return JsonResult.fail(ServiceCode.ERROR_BAD_REQUEST, message);
     }
 

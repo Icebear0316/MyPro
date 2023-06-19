@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 
+import java.util.List;
+
 @SpringBootTest
 @Sql(scripts = {"classpath:/sql/truncate_table.sql", "classpath:/sql/insert_data.sql"})
 @Sql(scripts = {"classpath:/sql/truncate_table.sql", "classpath:/sql/insert_data.sql"},
@@ -29,6 +31,13 @@ public class TagRepositoryTests {
     }
 
     @Test
+    void deleteById() {
+        Long id = 1L;
+        int rows = repository.deleteById(id);
+        System.out.println("删除数据完成，受影响的行数：" + rows);
+    }
+
+    @Test
     void countByName() {
         String name = "茶叶标签";
         int count = repository.countByName(name);
@@ -36,11 +45,32 @@ public class TagRepositoryTests {
     }
 
     @Test
+    void getStandardById() {
+        Long id = 1L;
+        Object queryResult = repository.getStandardById(id);
+        System.out.println("根据ID查询数据完成，查询结果：" + queryResult);
+    }
+
+    @Test
     void listTagType() {
         Integer pageNum = 2;
         Integer pageSize = 2;
-        PageData<TagTypeListItemVO> pageData = repository.listTagType(pageNum, pageSize);
-        System.out.println(pageData);
+        List<?> list = repository.listTagType(pageNum, pageSize).getList();
+        System.out.println("根据列表数据完成，列表长度：" + list.size());
+        for (Object item : list) {
+            System.out.println("列表项：" + item);
+        }
+    }
+
+    @Test
+    void list() {
+        Integer pageNum = 1;
+        Integer pageSize = 10;
+        List<?> list = repository.list(pageNum, pageSize).getList();
+        System.out.println("根据列表数据完成，列表长度：" + list.size());
+        for (Object item : list) {
+            System.out.println("列表项：" + item);
+        }
     }
 
 }

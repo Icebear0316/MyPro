@@ -5,6 +5,8 @@ import cn.tedu.tea.admin.server.common.util.PageInfoToPageDataConverter;
 import cn.tedu.tea.admin.server.content.dao.persist.mapper.TagMapper;
 import cn.tedu.tea.admin.server.content.dao.persist.repository.ITagRepository;
 import cn.tedu.tea.admin.server.content.pojo.entity.Tag;
+import cn.tedu.tea.admin.server.content.pojo.vo.TagListItemVO;
+import cn.tedu.tea.admin.server.content.pojo.vo.TagStandardVO;
 import cn.tedu.tea.admin.server.content.pojo.vo.TagTypeListItemVO;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
@@ -32,16 +34,28 @@ public class TagRepositoryImpl implements ITagRepository {
 
     @Override
     public int insert(Tag tag) {
-        log.debug("开始向【标签表】中插入数据：{}", tag);
+        log.debug("开始执行【向标签表中插入数据】，参数：{}", tag);
         return tagMapper.insert(tag);
     }
 
     @Override
+    public int deleteById(Long id) {
+        log.debug("开始执行【根据ID删除标签数据】，参数：{}", id);
+        return tagMapper.deleteById(id);
+    }
+
+    @Override
     public int countByName(String name) {
-        log.debug("根据名称【{}】统计【标签表】中的数据的数量", name);
+        log.debug("开始执行【根据名称\"{}\"统计标签表中数据的数量】，参数：", name);
         QueryWrapper<Tag> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("name", name);
         return tagMapper.selectCount(queryWrapper);
+    }
+
+    @Override
+    public TagStandardVO getStandardById(Long id) {
+        log.debug("开始执行【根据ID查询标签】，参数：{}", id);
+        return tagMapper.getStandardById(id);
     }
 
     @Override
@@ -51,6 +65,16 @@ public class TagRepositoryImpl implements ITagRepository {
         List<TagTypeListItemVO> tagTypeList = tagMapper.listTagType();
         PageInfo<TagTypeListItemVO> pageInfo = new PageInfo<>(tagTypeList);
         PageData<TagTypeListItemVO> pageData = PageInfoToPageDataConverter.convert(pageInfo);
+        return pageData;
+    }
+
+    @Override
+    public PageData<TagListItemVO> list(Integer pageNum, Integer pageSize) {
+        log.debug("开始执行【查询标签列表】，页码：{}，每页记录数：{}", pageNum, pageSize);
+        PageHelper.startPage(pageNum, pageSize);
+        List<TagListItemVO> list = tagMapper.list();
+        PageInfo<TagListItemVO> pageInfo = new PageInfo<>(list);
+        PageData<TagListItemVO> pageData = PageInfoToPageDataConverter.convert(pageInfo);
         return pageData;
     }
 

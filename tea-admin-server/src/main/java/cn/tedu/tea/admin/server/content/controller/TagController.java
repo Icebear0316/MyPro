@@ -2,7 +2,9 @@ package cn.tedu.tea.admin.server.content.controller;
 
 import cn.tedu.tea.admin.server.common.pojo.vo.PageData;
 import cn.tedu.tea.admin.server.common.web.JsonResult;
+import cn.tedu.tea.admin.server.content.pojo.param.TagAddNewParam;
 import cn.tedu.tea.admin.server.content.pojo.param.TagTypeAddNewParam;
+import cn.tedu.tea.admin.server.content.pojo.vo.TagListItemVO;
 import cn.tedu.tea.admin.server.content.pojo.vo.TagTypeListItemVO;
 import cn.tedu.tea.admin.server.content.service.ITagService;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
@@ -11,6 +13,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.validator.constraints.Range;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/content/tags")
 @Api(tags = "1.1. 内容管理-标签管理")
+@Validated
 public class TagController {
 
     @Autowired
@@ -36,10 +40,31 @@ public class TagController {
     // 不添加@RequestBody：接收FormData参数
     @ApiOperation("新增标签类别")
     @ApiOperationSupport(order = 100)
-    @PostMapping("/add-new")
+    @PostMapping("/type/add-new")
     public JsonResult addNew(@Validated TagTypeAddNewParam tagTypeAddNewParam) {
         log.debug("开始处理【新增标签类别】的请求，参数：{}", tagTypeAddNewParam);
         tagService.addNew(tagTypeAddNewParam);
+        return JsonResult.ok();
+    }
+
+    @ApiOperation("新增标签")
+    @ApiOperationSupport(order = 110)
+    @PostMapping("/add-new")
+    public JsonResult addNew(@Validated TagAddNewParam tagAddNewParam) {
+        log.debug("开始处理【新增标签】的请求，参数：{}", tagAddNewParam);
+        tagService.addNew(tagAddNewParam);
+        return JsonResult.ok();
+    }
+
+    @ApiOperation("删除标签")
+    @ApiOperationSupport(order = 200)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "标签ID", required = true, dataType = "long")
+    })
+    @PostMapping("/{id:[0-9]+}/delete")
+    public JsonResult delete(@PathVariable @Range(min = 1, message = "删除标签失败，请提交合法的ID值！") Long id) {
+        log.debug("开始处理【删除标签】的请求，参数：{}", id);
+        tagService.delete(id);
         return JsonResult.ok();
     }
 
@@ -49,7 +74,7 @@ public class TagController {
         @ApiImplicitParam(name = "page", value = "页码", dataType = "int"),
         @ApiImplicitParam(name = "queryType", value = "查询类型，当需要查询全部数据时，此参数值应该是all")
     })
-    @GetMapping("/tag-type/list")
+    @GetMapping("/type/list")
     public JsonResult listTagType(Integer page, String queryType) {
         log.debug("开始处理【查询标签类别列表】请求，页码：{}", page);
         if (page == null) {
@@ -58,9 +83,31 @@ public class TagController {
         Integer pageNum = page > 0 ? page : 1;
         PageData<TagTypeListItemVO> pageData ;
         if ("all".equals(queryType)) {
-            pageData = tagService.listTagType(pageNum, Integer.MAX_VALUE);
+            pageData = tagService.listTagType(1, Integer.MAX_VALUE);
         } else {
             pageData = tagService.listTagType(pageNum);
+        }
+        return JsonResult.ok(pageData);
+    }
+
+    @ApiOperation("查询标签列表")
+    @ApiOperationSupport(order = 421)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "page", value = "页码", dataType = "int"),
+            @ApiImplicitParam(name = "queryType", value = "查询类型，当需要查询全部数据时，此参数值应该是all")
+    })
+    @GetMapping("")
+    public JsonResult list(Integer page, String queryType) {
+        log.debug("开始处理【查询标签类别列表】请求，页码：{}", page);
+        if (page == null) {
+            page = 1;
+        }
+        Integer pageNum = page > 0 ? page : 1;
+        PageData<TagListItemVO> pageData ;
+        if ("all".equals(queryType)) {
+            pageData = tagService.list(1, Integer.MAX_VALUE);
+        } else {
+            pageData = tagService.list(pageNum);
         }
         return JsonResult.ok(pageData);
     }

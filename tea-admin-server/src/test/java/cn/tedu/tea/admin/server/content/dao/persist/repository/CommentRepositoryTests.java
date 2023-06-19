@@ -7,15 +7,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 
 @SpringBootTest
+@Sql(scripts = {"classpath:/sql/truncate_table.sql", "classpath:/sql/insert_data.sql"})
+@Sql(scripts = {"classpath:/sql/truncate_table.sql", "classpath:/sql/insert_data.sql"},
+        executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 public class CommentRepositoryTests {
 
     @Autowired
     ICommentRepository repository;
 
     @Test
-    @Sql(scripts = "classpath:/sql/truncate_table.sql")
-    @Sql(scripts = "classpath:/sql/truncate_table.sql",
-            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void insert() {
         Comment comment = new Comment();
         comment.setAuthorId(1L);

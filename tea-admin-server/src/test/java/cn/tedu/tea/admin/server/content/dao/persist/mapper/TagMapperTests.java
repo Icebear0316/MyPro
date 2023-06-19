@@ -123,4 +123,13 @@ public class TagMapperTests {
         }
     }
 
+    @Test
+    void list() {
+        List<?> list = mapper.list();
+        System.out.println("根据列表数据完成，列表长度：" + list.size());
+        for (Object item : list) {
+            System.out.println("列表项：" + item);
+        }
+    }
+
 }
