@@ -43,7 +43,7 @@
                type="cn.tedu.tea.admin.server.content.pojo.vo.TagStandardVO">
         <id column="id" property="id"/>
         <result column="name" property="name"/>
-        <result column="parent_id" property="parentId"/>
+        <result column="parent_id" property="typeId"/>
         <result column="enable" property="enable"/>
         <result column="sort" property="sort"/>
     </resultMap>

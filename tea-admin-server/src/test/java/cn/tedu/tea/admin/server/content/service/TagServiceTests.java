@@ -84,6 +84,30 @@ public class TagServiceTests {
     }
 
     @Test
+    void setEnable() {
+        Long id = 1L;
+        try {
+            service.setEnable(id);
+            System.out.println("修改数据完成！");
+        } catch (ServiceException e) {
+            System.out.println(e.getServiceCode().getValue());
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @Test
+    void setDisable() {
+        Long id = 1L;
+        try {
+            service.setDisable(id);
+            System.out.println("修改数据完成！");
+        } catch (ServiceException e) {
+            System.out.println(e.getServiceCode().getValue());
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @Test
     void getStandardById() {
         Long id = 10L;
 

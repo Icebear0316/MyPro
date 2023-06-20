@@ -79,7 +79,7 @@ public class TagServiceImpl implements ITagService {
         log.debug("开始处理【删除标签】的业务，参数：{}", id);
 
         TagStandardVO currentTag = tagRepository.getStandardById(id);
-        if (currentTag == null || currentTag.getParentId() == 0) {
+        if (currentTag == null || currentTag.getTypeId() == 0) {
             String message = "删除标签失败，尝试删除的标签数据不存在！";
             log.warn(message);
             throw new ServiceException(ServiceCode.ERROR_NOT_FOUND, message);
@@ -94,7 +94,7 @@ public class TagServiceImpl implements ITagService {
 
         Long id = tagUpdateInfoParam.getId();
         TagStandardVO currentTag = tagRepository.getStandardById(id);
-        if (currentTag == null || currentTag.getParentId() == 0) {
+        if (currentTag == null || currentTag.getTypeId() == 0) {
             String message = "修改标签失败，尝试修改的标签数据不存在！";
             log.warn(message);
             throw new ServiceException(ServiceCode.ERROR_NOT_FOUND, message);
@@ -110,14 +110,27 @@ public class TagServiceImpl implements ITagService {
 
         Tag tag = new Tag();
         BeanUtils.copyProperties(tagUpdateInfoParam, tag);
+        tag.setParentId(tagUpdateInfoParam.getTypeId());
         tagRepository.updateById(tag);
+    }
+
+    @Override
+    public void setEnable(Long id) {
+        log.debug("开始处理【启用标签】的业务，参数：{}", id);
+        updateEnableById(id, 1);
+    }
+
+    @Override
+    public void setDisable(Long id) {
+        log.debug("开始处理【禁用标签】的业务，参数：{}", id);
+        updateEnableById(id, 0);
     }
 
     @Override
     public TagStandardVO getStandardById(Long id) {
         log.debug("开始处理【根据ID查询标签】业务，参数：{}", id);
         TagStandardVO currentTag = tagRepository.getStandardById(id);
-        if (currentTag == null || currentTag.getParentId() == 0) {
+        if (currentTag == null || currentTag.getTypeId() == 0) {
             String message = "获取标签详情失败，尝试访问的标签数据不存在！";
             log.warn(message);
             throw new ServiceException(ServiceCode.ERROR_NOT_FOUND, message);
@@ -151,6 +164,26 @@ public class TagServiceImpl implements ITagService {
         log.debug("开始处理【查询标签列表】的业务，页码：{}，每页记录数：{}", pageNum, pageSize);
         PageData<TagListItemVO> pageData = tagRepository.list(pageNum, pageSize);
         return pageData;
+    }
+
+    private void updateEnableById(Long id, Integer enable) {
+        TagStandardVO currentTag = tagRepository.getStandardById(id);
+        if (currentTag == null || currentTag.getTypeId() == 0) {
+            String message = ENABLE_TEXT[enable] + "标签失败，尝试访问的标签数据不存在！";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERROR_NOT_FOUND, message);
+        }
+
+        if (currentTag.getEnable() == enable) {
+            String message = ENABLE_TEXT[enable] + "标签失败，标签已经处于此状态！";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERROR_CONFLICT, message);
+        }
+
+        Tag tag = new Tag();
+        tag.setId(id);
+        tag.setEnable(enable);
+        tagRepository.updateById(tag);
     }
 
 }

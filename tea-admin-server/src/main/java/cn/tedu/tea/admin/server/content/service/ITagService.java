@@ -15,6 +15,11 @@ import cn.tedu.tea.admin.server.content.pojo.vo.TagTypeListItemVO;
 public interface ITagService {
 
     /**
+     * 启用状态的显示文本
+     */
+    String ENABLE_TEXT[] = {"禁用" , "启用"};
+
+    /**
      * 新增标签类型
      *
      * @param tagTypeAddNewParam 新增的标签类型数据
@@ -41,6 +46,20 @@ public interface ITagService {
      * @param tagUpdateInfoParam 封装了被修改数据的ID和新数据的对象
      */
     void updateInfoById(TagUpdateInfoParam tagUpdateInfoParam);
+
+    /**
+     * 启用标签
+     *
+     * @param id 标签ID
+     */
+    void setEnable(Long id);
+
+    /**
+     * 禁用标签
+     *
+     * @param id 标签ID
+     */
+    void setDisable(Long id);
 
     /**
      * 根据ID查询标签
