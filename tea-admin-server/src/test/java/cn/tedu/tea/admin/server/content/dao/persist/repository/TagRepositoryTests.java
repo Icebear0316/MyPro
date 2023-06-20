@@ -31,6 +31,13 @@ public class TagRepositoryTests {
     }
 
     @Test
+    void deleteById() {
+        Long id = 1L;
+        int rows = repository.deleteById(id);
+        System.out.println("删除数据完成，受影响的行数：" + rows);
+    }
+
+    @Test
     void updateById() {
         Tag tag = new Tag();
         tag.setId(1L);
@@ -42,10 +49,11 @@ public class TagRepositoryTests {
     }
 
     @Test
-    void deleteById() {
-        Long id = 1L;
-        int rows = repository.deleteById(id);
-        System.out.println("删除数据完成，受影响的行数：" + rows);
+    void updateEnableByParentId() {
+        Long parentId = 1L;
+        Integer enable = 0;
+        int rows = repository.updateEnableByParentId(parentId, enable);
+        System.out.println("修改数据完成，受影响的行数：" + rows);
     }
 
     @Test

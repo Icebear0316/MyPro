@@ -51,7 +51,12 @@ public class TagServiceImpl implements ITagService {
         Tag tag = new Tag();
         BeanUtils.copyProperties(tagTypeAddNewParam, tag);
         tag.setParentId(0L);
-        tagRepository.insert(tag);
+        int rows = tagRepository.insert(tag);
+        if (rows != 1) {
+            String message = "新增标签类别失败，服务器忙，请稍后再试！";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERROR_INSERT, message);
+        }
     }
 
     @Override
@@ -71,7 +76,12 @@ public class TagServiceImpl implements ITagService {
         Tag tag = new Tag();
         BeanUtils.copyProperties(tagAddNewParam, tag);
         tag.setParentId(tagAddNewParam.getTypeId());
-        tagRepository.insert(tag);
+        int rows = tagRepository.insert(tag);
+        if (rows != 1) {
+            String message = "新增标签失败，服务器忙，请稍后再试！";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERROR_INSERT, message);
+        }
     }
 
     @Override
@@ -85,7 +95,12 @@ public class TagServiceImpl implements ITagService {
             throw new ServiceException(ServiceCode.ERROR_NOT_FOUND, message);
         }
 
-        tagRepository.deleteById(id);
+        int rows = tagRepository.deleteById(id);
+        if (rows != 1) {
+            String message = "删除标签失败，服务器忙，请稍后再试！";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERROR_DELETE, message);
+        }
     }
 
     @Override
@@ -111,7 +126,24 @@ public class TagServiceImpl implements ITagService {
         Tag tag = new Tag();
         BeanUtils.copyProperties(tagUpdateInfoParam, tag);
         tag.setParentId(tagUpdateInfoParam.getTypeId());
-        tagRepository.updateById(tag);
+        int rows = tagRepository.updateById(tag);
+        if (rows != 1) {
+            String message = "修改标签失败，服务器忙，请稍后再试！";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERROR_UPDATE, message);
+        }
+    }
+
+    @Override
+    public void setTagTypeEnable(Long id) {
+        log.debug("开始处理【启用标签类别】的业务，参数：{}", id);
+        updateTagTypeEnableById(id, 1);
+    }
+
+    @Override
+    public void setTagTypeDisable(Long id) {
+        log.debug("开始处理【禁用标签类别】的业务，参数：{}", id);
+        updateTagTypeEnableById(id, 0);
     }
 
     @Override
@@ -166,6 +198,38 @@ public class TagServiceImpl implements ITagService {
         return pageData;
     }
 
+    private void updateTagTypeEnableById(Long id, Integer enable) {
+        TagStandardVO currentTag = tagRepository.getStandardById(id);
+        if (currentTag == null || currentTag.getTypeId() != 0) {
+            String message = ENABLE_TEXT[enable] + "标签类别失败，尝试访问的标签类别数据不存在！";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERROR_NOT_FOUND, message);
+        }
+
+        if (currentTag.getEnable() == enable) {
+            String message = ENABLE_TEXT[enable] + "标签类别失败，标签类别已经处于此状态！";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERROR_CONFLICT, message);
+        }
+
+        Tag tag = new Tag();
+        tag.setId(id);
+        tag.setEnable(enable);
+        int rows = tagRepository.updateById(tag);
+        if (rows != 1) {
+            String message = ENABLE_TEXT[enable] + "标签类别失败，服务器忙，请稍后再试！";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERROR_UPDATE, message);
+        }
+
+        rows = tagRepository.updateEnableByParentId(id, enable);
+        if (rows < 0) {
+            String message = ENABLE_TEXT[enable] + "标签类别失败，服务器忙，请稍后再试！";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERROR_UPDATE, message);
+        }
+    }
+
     private void updateEnableById(Long id, Integer enable) {
         TagStandardVO currentTag = tagRepository.getStandardById(id);
         if (currentTag == null || currentTag.getTypeId() == 0) {
@@ -183,7 +247,12 @@ public class TagServiceImpl implements ITagService {
         Tag tag = new Tag();
         tag.setId(id);
         tag.setEnable(enable);
-        tagRepository.updateById(tag);
+        int rows = tagRepository.updateById(tag);
+        if (rows != 1) {
+            String message = ENABLE_TEXT[enable] + "标签失败，服务器忙，请稍后再试！";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERROR_UPDATE, message);
+        }
     }
 
 }

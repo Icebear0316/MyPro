@@ -51,6 +51,16 @@ public class TagRepositoryImpl implements ITagRepository {
     }
 
     @Override
+    public int updateEnableByParentId(Long parentId, Integer enable) {
+        log.debug("开始执行【根据parentId修改启用状态】，parentId：{}，新的启用状态：{}", parentId, enable);
+        Tag tag = new Tag();
+        tag.setEnable(enable);
+        QueryWrapper<Tag> wrapper = new QueryWrapper<>();
+        wrapper.eq("parent_id", parentId);
+        return tagMapper.update(tag, wrapper);
+    }
+
+    @Override
     public int countByName(String name) {
         log.debug("开始执行【根据名称\"{}\"统计标签表中数据的数量】，参数：", name);
         QueryWrapper<Tag> queryWrapper = new QueryWrapper<>();

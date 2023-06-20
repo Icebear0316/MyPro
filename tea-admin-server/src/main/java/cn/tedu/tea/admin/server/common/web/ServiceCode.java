@@ -24,6 +24,18 @@ public enum ServiceCode {
      */
     ERROR_CONFLICT(40900),
     /**
+     * 错误：未知的插入数据失败
+     */
+    ERROR_INSERT(50000),
+    /**
+     * 错误：未知的删除数据失败
+     */
+    ERROR_DELETE(50100),
+    /**
+     * 错误：未知的修改数据失败
+     */
+    ERROR_UPDATE(50200),
+    /**
      * 错误：其它异常
      */
     ERROR_UNKNOWN(99999);

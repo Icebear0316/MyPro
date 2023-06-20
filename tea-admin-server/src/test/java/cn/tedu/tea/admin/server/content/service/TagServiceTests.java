@@ -14,8 +14,8 @@ import org.springframework.test.context.jdbc.Sql;
 
 @SpringBootTest
 @Sql(scripts = {"classpath:/sql/truncate_table.sql", "classpath:/sql/insert_data.sql"})
-@Sql(scripts = {"classpath:/sql/truncate_table.sql", "classpath:/sql/insert_data.sql"},
-        executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+//@Sql(scripts = {"classpath:/sql/truncate_table.sql", "classpath:/sql/insert_data.sql"},
+//        executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 public class TagServiceTests {
 
     @Autowired
@@ -76,6 +76,30 @@ public class TagServiceTests {
 
         try {
             service.updateInfoById(tagUpdateInfoParam);
+            System.out.println("修改数据完成！");
+        } catch (ServiceException e) {
+            System.out.println(e.getServiceCode().getValue());
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @Test
+    void setTagTypeEnable() {
+        Long id = 1L;
+        try {
+            service.setTagTypeEnable(id);
+            System.out.println("修改数据完成！");
+        } catch (ServiceException e) {
+            System.out.println(e.getServiceCode().getValue());
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @Test
+    void setTagTypeDisable() {
+        Long id = 1L;
+        try {
+            service.setTagTypeDisable(id);
             System.out.println("修改数据完成！");
         } catch (ServiceException e) {
             System.out.println(e.getServiceCode().getValue());

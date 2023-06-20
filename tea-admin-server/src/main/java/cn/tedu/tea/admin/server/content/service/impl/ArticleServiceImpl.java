@@ -1,5 +1,7 @@
 package cn.tedu.tea.admin.server.content.service.impl;
 
+import cn.tedu.tea.admin.server.common.ex.ServiceException;
+import cn.tedu.tea.admin.server.common.web.ServiceCode;
 import cn.tedu.tea.admin.server.content.dao.persist.repository.IArticleRepository;
 import cn.tedu.tea.admin.server.content.pojo.entity.Article;
 import cn.tedu.tea.admin.server.content.pojo.param.ArticleAddNewParam;
@@ -28,11 +30,16 @@ public class ArticleServiceImpl implements IArticleService {
 
     @Override
     public void addNew(ArticleAddNewParam articleAddNewParam) {
-        log.debug("开始处理【新增文章文章】的业务，参数：{}", articleAddNewParam);
+        log.debug("开始处理【新增文章】的业务，参数：{}", articleAddNewParam);
 
         Article article = new Article();
         BeanUtils.copyProperties(articleAddNewParam, article);
-        articleRepository.insert(article);
+        int rows = articleRepository.insert(article);
+        if (rows != 1) {
+            String message = "新增文章失败，服务器忙，请稍后再试！";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERROR_INSERT, message);
+        }
     }
 
 }

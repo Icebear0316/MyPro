@@ -7,11 +7,13 @@ import cn.tedu.tea.admin.server.content.pojo.param.TagUpdateInfoParam;
 import cn.tedu.tea.admin.server.content.pojo.vo.TagListItemVO;
 import cn.tedu.tea.admin.server.content.pojo.vo.TagStandardVO;
 import cn.tedu.tea.admin.server.content.pojo.vo.TagTypeListItemVO;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 处理标签数据的业务接口
  *
  */
+@Transactional
 public interface ITagService {
 
     /**
@@ -46,6 +48,20 @@ public interface ITagService {
      * @param tagUpdateInfoParam 封装了被修改数据的ID和新数据的对象
      */
     void updateInfoById(TagUpdateInfoParam tagUpdateInfoParam);
+
+    /**
+     * 启用标签类别
+     *
+     * @param id 标签类别ID
+     */
+    void setTagTypeEnable(Long id);
+
+    /**
+     * 禁用标签类别
+     *
+     * @param id 标签类别ID
+     */
+    void setTagTypeDisable(Long id);
 
     /**
      * 启用标签

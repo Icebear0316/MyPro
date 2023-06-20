@@ -5,11 +5,13 @@ import cn.tedu.tea.admin.server.content.pojo.entity.Tag;
 import cn.tedu.tea.admin.server.content.pojo.vo.TagListItemVO;
 import cn.tedu.tea.admin.server.content.pojo.vo.TagStandardVO;
 import cn.tedu.tea.admin.server.content.pojo.vo.TagTypeListItemVO;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 处理标签数据的存储库接口
  *
  */
+@Transactional
 public interface ITagRepository {
 
     /**
@@ -37,14 +39,21 @@ public interface ITagRepository {
     int updateById(Tag tag);
 
     /**
+     * 根据parentId修改启用状态
+     *
+     * @param parentId 标签类别ID
+     * @param enable   新的启用状态
+     * @return 受影响的行数
+     */
+    int updateEnableByParentId(Long parentId, Integer enable);
+
+    /**
      * 根据名称统计标签数量，通常用于检查名称是否被占用
      *
      * @param name 标签名称
      * @return 匹配此标签名称的数据的数量
      */
     int countByName(String name);
-
-
 
     /**
      * 统计匹配名称查不匹配ID的标签数量，通常用于修改数据时判断名称是否被占用

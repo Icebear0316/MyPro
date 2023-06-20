@@ -1,5 +1,7 @@
 package cn.tedu.tea.admin.server.content.service.impl;
 
+import cn.tedu.tea.admin.server.common.ex.ServiceException;
+import cn.tedu.tea.admin.server.common.web.ServiceCode;
 import cn.tedu.tea.admin.server.content.dao.persist.repository.ICommentRepository;
 import cn.tedu.tea.admin.server.content.pojo.entity.Comment;
 import cn.tedu.tea.admin.server.content.pojo.param.CommentAddNewParam;
@@ -28,11 +30,16 @@ public class CommentServiceImpl implements ICommentService {
 
     @Override
     public void addNew(CommentAddNewParam commentAddNewParam) {
-        log.debug("开始处理【新增评论评论】的业务，参数：{}", commentAddNewParam);
+        log.debug("开始处理【新增评论】的业务，参数：{}", commentAddNewParam);
 
         Comment comment = new Comment();
         BeanUtils.copyProperties(commentAddNewParam, comment);
-        commentRepository.insert(comment);
+        int rows = commentRepository.insert(comment);
+        if (rows != 1) {
+            String message = "新增评论失败，服务器忙，请稍后再试！";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERROR_INSERT, message);
+        }
     }
 
 }
