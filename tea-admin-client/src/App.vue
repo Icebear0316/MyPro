@@ -2,6 +2,7 @@
   <div id="app">
     <!-- 所有内容将由其它视图组件来实现 -->
     <router-view/>
+
   </div>
 </template>
 

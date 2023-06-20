@@ -17,7 +17,7 @@ public interface ITagService {
     /**
      * 启用状态的显示文本
      */
-    String ENABLE_TEXT[] = {"禁用" , "启用"};
+    String[] ENABLE_TEXT = {"禁用" , "启用"};
 
     /**
      * 新增标签类型

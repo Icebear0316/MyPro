@@ -30,7 +30,6 @@ import org.springframework.web.bind.annotation.*;
 @Api(tags = "1.1. 内容管理-标签管理")
 @Validated
 public class TagController {
-
     @Autowired
     private ITagService tagService;
 
@@ -73,9 +72,33 @@ public class TagController {
     @ApiOperation("修改标签")
     @ApiOperationSupport(order = 300)
     @PostMapping("/{id:[0-9]+}/update/info")
-    public JsonResult updateInfoById(@Validated TagUpdateInfoParam updateInfoParam) {
-        log.debug("开始处理【修改标签】的请求，参数：{}", updateInfoParam);
-        tagService.updateInfoById(updateInfoParam);
+    public JsonResult updateInfoById(@Validated TagUpdateInfoParam tagUpdateInfoParam) {
+        log.debug("开始处理【修改标签】的请求，参数：{}", tagUpdateInfoParam);
+        tagService.updateInfoById(tagUpdateInfoParam);
+        return JsonResult.ok();
+    }
+
+    @ApiOperation("启用标签")
+    @ApiOperationSupport(order = 310)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "标签ID", required = true, dataType = "long")
+    })
+    @PostMapping("/{id:[0-9]+}/enable")
+    public JsonResult setEnable(@PathVariable @Range(min = 1, message = "启用标签失败，请提交合法的ID值！") Long id) {
+        log.debug("开始处理【启用标签】的请求，参数：{}", id);
+        tagService.setEnable(id);
+        return JsonResult.ok();
+    }
+
+    @ApiOperation("禁用标签")
+    @ApiOperationSupport(order = 311)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "标签ID", required = true, dataType = "long")
+    })
+    @PostMapping("/{id:[0-9]+}/disable")
+    public JsonResult setDisable(@PathVariable @Range(min = 1, message = "禁用标签失败，请提交合法的ID值！") Long id) {
+        log.debug("开始处理【禁用标签】的请求，参数：{}", id);
+        tagService.setDisable(id);
         return JsonResult.ok();
     }
 

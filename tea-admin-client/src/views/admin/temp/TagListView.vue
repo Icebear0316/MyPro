@@ -57,7 +57,7 @@
     <!-- 修改数据的表单 -->
     <el-dialog title="编辑标签数据" :visible.sync="editFormVisible">
       <el-form :model="editForm" :rules="editRules" label-width="120px">
-        <el-form-item label="标签类别">
+        <el-form-item label="标签类别" prop="typeId">
           <el-select v-model="editForm.typeId" placeholder="请选择">
             <el-option
                 v-for="item in tagTypeOptions"
@@ -76,7 +76,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="editFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="editFormVisible = false">确 定</el-button>
+        <el-button type="primary" @click="handleEdit()">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -97,6 +97,7 @@ export default {
       // 编辑对话框相关数据
       editFormVisible: false,
       editForm: {
+        id: '',
         typeId: '',
         name: '',
         sort: ''
@@ -147,7 +148,34 @@ export default {
     },
     // 切换启用状态
     toggleEnable(tableItem) {
-      alert('即将切换【' + tableItem.id + " - " + tableItem.name + '】的启用状态，还没做！');
+      let enableText = ['禁用', '启用'];
+      let url = 'http://localhost:9080/content/tags/' + tableItem.id;
+      if (tableItem.enable == 0) {
+        url += '/disable';
+      } else {
+        url += '/enable';
+      }
+      console.log('url = ' + url);
+
+      this.axios.post(url).then((response) => {
+        let jsonResult = response.data;
+        if (jsonResult.state == 20000) {
+          this.$message({
+            message: enableText[tableItem.enable] + '标签成功！',
+            type: 'success'
+          });
+        } else {
+          let title = '操作失败';
+          this.$alert(jsonResult.message, title, {
+            confirmButtonText: '确定',
+            callback: action => {
+              if (jsonResult.state == 40400) {
+                this.loadTagList();
+              }
+            }
+          });
+        }
+      });
     },
     // 弹出修改对话框
     openEditDialog(tableItem) {
@@ -158,7 +186,6 @@ export default {
         let jsonResult = response.data;
         if (jsonResult.state == 20000) {
           this.editForm = jsonResult.data;
-          this.editForm.typeId = jsonResult.data.parentId;
           this.editFormVisible = true;
         } else {
           let title = '操作失败';
@@ -166,6 +193,41 @@ export default {
             confirmButtonText: '确定',
             callback: action => {
               this.loadTagList();
+            }
+          });
+        }
+      });
+    },
+    // 执行修改
+    handleEdit() {
+      let url = 'http://localhost:9080/content/tags/' + this.editForm.id + '/update/info';
+      console.log('url = ' + url);
+      let formData = this.qs.stringify(this.editForm);
+      console.log('formData = ' + formData);
+
+      this.axios.post(url, formData).then((response) => {
+        let jsonResult = response.data;
+        if (jsonResult.state == 20000) {
+          this.$message({
+            message: '修改标签成功！',
+            type: 'success'
+          });
+          this.editFormVisible = false;
+          this.loadTagList();
+        } else if (jsonResult.state == 40400) {
+          let title = '操作失败';
+          this.$alert(jsonResult.message, title, {
+            confirmButtonText: '确定',
+            callback: action => {
+              this.editFormVisible = false;
+              this.loadTagList();
+            }
+          });
+        } else {
+          let title = '操作失败';
+          this.$alert(jsonResult.message, title, {
+            confirmButtonText: '确定',
+            callback: action => {
             }
           });
         }
