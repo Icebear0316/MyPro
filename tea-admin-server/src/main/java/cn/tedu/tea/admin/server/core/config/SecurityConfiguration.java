@@ -35,6 +35,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 "/**/*.js",
                 "/swagger-resources",
                 "/v2/api-docs",
+                "/account/users/login"
         };
 
         // 禁用“防止伪造的跨域攻击的防御机制”
