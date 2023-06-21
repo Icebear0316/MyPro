@@ -4,6 +4,10 @@ import cn.tedu.tea.admin.server.common.ex.ServiceException;
 import cn.tedu.tea.admin.server.common.web.JsonResult;
 import cn.tedu.tea.admin.server.common.web.ServiceCode;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -65,6 +69,24 @@ public class GlobalExceptionHandler {
         }
         String message = stringBuilder.toString();
         return JsonResult.fail(ServiceCode.ERROR_BAD_REQUEST, message);
+    }
+
+    @ExceptionHandler({
+            InternalAuthenticationServiceException.class,
+            BadCredentialsException.class
+    })
+    public JsonResult handleAuthenticationException(AuthenticationException e) {
+        log.debug("全局异常处理器开始处理AuthenticationException");
+        log.debug("异常类型：{}", e.getClass().getName());
+        String message = "登录失败，用户名或密码错误！";
+        return JsonResult.fail(ServiceCode.ERROR_UNAUTHORIZED, message);
+    }
+
+    @ExceptionHandler
+    public JsonResult handleDisabledException(DisabledException e) {
+        log.debug("全局异常处理器开始处理DisabledException");
+        String message = "登录失败，此账号已经被禁用！";
+        return JsonResult.fail(ServiceCode.ERROR_UNAUTHORIZED_DISABLED, message);
     }
 
     @ExceptionHandler

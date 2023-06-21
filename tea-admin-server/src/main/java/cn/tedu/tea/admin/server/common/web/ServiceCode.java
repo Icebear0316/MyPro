@@ -17,6 +17,18 @@ public enum ServiceCode {
      */
     ERROR_BAD_REQUEST(40000),
     /**
+     * 错误：未认证
+     */
+    ERROR_UNAUTHORIZED(40100),
+    /**
+     * 错误：未认证，因为被禁用
+     */
+    ERROR_UNAUTHORIZED_DISABLED(40101),
+    /**
+     * 错误：禁止访问，用于无权限
+     */
+    ERROR_FORBIDDEN(40300),
+    /**
      * 错误：数据不存在
      */
     ERROR_NOT_FOUND(40400),
