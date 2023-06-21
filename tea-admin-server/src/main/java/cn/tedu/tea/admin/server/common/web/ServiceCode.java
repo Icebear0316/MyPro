@@ -3,7 +3,8 @@ package cn.tedu.tea.admin.server.common.web;
 /**
  * 业务状态码
  *
- *
+ * @author java@tedu.cn
+ * @version 1.0
  */
 public enum ServiceCode {
 

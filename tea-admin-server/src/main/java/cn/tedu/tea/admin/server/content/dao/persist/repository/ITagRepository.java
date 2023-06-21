@@ -5,13 +5,13 @@ import cn.tedu.tea.admin.server.content.pojo.entity.Tag;
 import cn.tedu.tea.admin.server.content.pojo.vo.TagListItemVO;
 import cn.tedu.tea.admin.server.content.pojo.vo.TagStandardVO;
 import cn.tedu.tea.admin.server.content.pojo.vo.TagTypeListItemVO;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 处理标签数据的存储库接口
  *
+ * @author java@tedu.cn
+ * @version 1.0
  */
-@Transactional
 public interface ITagRepository {
 
     /**

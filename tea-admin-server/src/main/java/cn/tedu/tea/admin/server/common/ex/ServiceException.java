@@ -6,7 +6,8 @@ import lombok.Getter;
 /**
  * 业务异常
  *
- *
+ * @author java@tedu.cn
+ * @version 1.0
  */
 public class ServiceException extends RuntimeException {
 

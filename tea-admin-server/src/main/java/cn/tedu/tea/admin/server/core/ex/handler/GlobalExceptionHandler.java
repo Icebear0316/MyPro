@@ -14,6 +14,9 @@ import java.util.Set;
 
 /**
  * 全局异常处理器
+ *
+ * @author java@tedu.cn
+ * @version 1.0
  */
 @Slf4j
 @RestControllerAdvice

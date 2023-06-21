@@ -8,7 +8,8 @@ import org.springframework.stereotype.Repository;
 /**
  * 处理文章数据的Mapper接口
  *
- *
+ * @author java@tedu.cn
+ * @version 1.0
  */
 @Repository
 public interface ArticleMapper extends BaseMapper<Article> {
@@ -20,6 +21,5 @@ public interface ArticleMapper extends BaseMapper<Article> {
      * @return 匹配的文章，如果没有匹配的数据，则返回null
      */
     ArticleStandardVO getStandardById(Long id);
-
 
 }

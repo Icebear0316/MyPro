@@ -7,6 +7,8 @@ import java.io.Serializable;
 /**
  * 列表项VO类：内容-文章
  *
+ * @author java@tedu.cn
+ * @version 1.0
  */
 @Data
 public class ArticleListItemVO implements Serializable {

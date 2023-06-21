@@ -10,6 +10,8 @@ import java.time.LocalDateTime;
 /**
  * 基于MyBatis Plus的自动填充时间的处理器类
  *
+ * @author java@tedu.cn
+ * @version 1.0
  */
 @Slf4j
 @Component

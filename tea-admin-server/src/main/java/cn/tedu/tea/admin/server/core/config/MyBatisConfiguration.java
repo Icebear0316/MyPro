@@ -7,10 +7,15 @@ import org.springframework.context.annotation.Configuration;
 /**
  * MyBatis的配置类
  *
+ * @author java@tedu.cn
+ * @version 1.0
  */
 @Slf4j
 @Configuration
-@MapperScan({"cn.tedu.tea.admin.server.content.dao.persist.mapper"})
+@MapperScan({
+        "cn.tedu.tea.admin.server.account.dao.persist.mapper",
+        "cn.tedu.tea.admin.server.content.dao.persist.mapper",
+})
 public class MyBatisConfiguration {
 
     public MyBatisConfiguration() {

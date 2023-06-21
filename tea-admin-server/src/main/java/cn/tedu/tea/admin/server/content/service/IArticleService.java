@@ -6,6 +6,8 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * 处理文章数据的业务接口
  *
+ * @author java@tedu.cn
+ * @version 1.0
  */
 @Transactional
 public interface IArticleService {

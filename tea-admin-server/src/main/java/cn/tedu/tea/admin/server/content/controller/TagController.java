@@ -23,6 +23,8 @@ import org.springframework.web.bind.annotation.*;
 /**
  * 处理标签相关请求的控制器类
  *
+ * @author java@tedu.cn
+ * @version 1.0
  */
 @Slf4j
 @RestController
@@ -30,6 +32,7 @@ import org.springframework.web.bind.annotation.*;
 @Api(tags = "1.1. 内容管理-标签管理")
 @Validated
 public class TagController {
+
     @Autowired
     private ITagService tagService;
 

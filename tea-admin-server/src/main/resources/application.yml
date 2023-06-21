@@ -1,7 +1,6 @@
 # ####################################### #
 # 此文件是本项目的主配置文件，所有配置将被应用 #
 # ####################################### #
-
 # 服务器的配置
 server:
   # Servlet（Java用于处理请求的组件）的配置
@@ -19,10 +18,11 @@ spring:
   profiles:
     # 激活哪些Profile配置
     active: dev
-  #jackson框架的配置
+  # Jackson框架的配置
   jackson:
-  #响应的Json结果中默认包含什么样的属性
+    # 响应的JSON结果中默认包含什么样的属性
     default-property-inclusion: non_null
+
 # MyBatis Plus配置
 mybatis-plus:
   # 配置SQL语句的XML文件的位置

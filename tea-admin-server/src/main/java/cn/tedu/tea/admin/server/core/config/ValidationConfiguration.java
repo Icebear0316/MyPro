@@ -10,6 +10,8 @@ import javax.validation.Validation;
 /**
  * Validation配置类
  *
+ * @author java@tedu.cn
+ * @version 0.0.1
  */
 @Slf4j
 @Configuration

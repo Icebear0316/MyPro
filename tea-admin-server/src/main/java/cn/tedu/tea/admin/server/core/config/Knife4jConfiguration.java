@@ -18,6 +18,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
 /**
  * Knife4j配置类
  *
+ * @author java@tedu.cn
+ * @version 1.0
  */
 @Slf4j
 @Configuration

@@ -1,13 +1,13 @@
 package cn.tedu.tea.admin.server.content.dao.persist.repository;
 
 import cn.tedu.tea.admin.server.content.pojo.entity.Comment;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 处理评论数据的存储库接口
  *
+ * @author java@tedu.cn
+ * @version 1.0
  */
-@Transactional
 public interface ICommentRepository {
 
     /**

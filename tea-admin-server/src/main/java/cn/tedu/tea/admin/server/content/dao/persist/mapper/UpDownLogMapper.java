@@ -7,6 +7,9 @@ import org.springframework.stereotype.Repository;
 
 /**
  * 处理顶踩日志数据的Mapper接口
+ *
+ * @author java@tedu.cn
+ * @version 1.0
  */
 @Repository
 public interface UpDownLogMapper extends BaseMapper<UpDownLog> {

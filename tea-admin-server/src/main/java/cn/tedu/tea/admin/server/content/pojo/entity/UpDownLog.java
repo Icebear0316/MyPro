@@ -8,6 +8,9 @@ import java.time.LocalDateTime;
 
 /**
  * 实体类：内容-顶踩日志
+ *
+ * @author java@tedu.cn
+ * @version 0.0.1
  */
 @Data
 @TableName("content_up_down_log")

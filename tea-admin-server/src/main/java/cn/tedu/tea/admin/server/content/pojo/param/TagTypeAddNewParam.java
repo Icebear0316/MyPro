@@ -4,7 +4,6 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.hibernate.validator.constraints.Range;
 
-
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
@@ -12,6 +11,8 @@ import java.io.Serializable;
 /**
  * 新增标签类型的参数类
  *
+ * @author java@tedu.cn
+ * @version 1.0
  */
 @Data
 public class TagTypeAddNewParam implements Serializable {

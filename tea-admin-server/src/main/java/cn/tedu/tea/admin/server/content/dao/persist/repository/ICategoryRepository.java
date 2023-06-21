@@ -2,13 +2,13 @@ package cn.tedu.tea.admin.server.content.dao.persist.repository;
 
 import cn.tedu.tea.admin.server.content.pojo.entity.Category;
 import cn.tedu.tea.admin.server.content.pojo.entity.Tag;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 处理类别数据的存储库接口
  *
+ * @author java@tedu.cn
+ * @version 1.0
  */
-@Transactional
 public interface ICategoryRepository {
 
     /**

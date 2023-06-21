@@ -8,6 +8,9 @@ import java.time.LocalDateTime;
 
 /**
  * 实体类：内容-评论
+ *
+ * @author java@tedu.cn
+ * @version 1.0
  */
 @Data
 @TableName("content_comment")

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.tedu.tea.admin.server.account.dao.persist.mapper.UserMapper">
+
+    <!-- UserLoginInfoVO getLoginInfoByUsername(String username); -->
+    <select id="getLoginInfoByUsername"
+            resultType="cn.tedu.tea.admin.server.account.pojo.vo.UserLoginInfoVO">
+        SELECT
+            id, username, password, nickname, avatar, enable
+        FROM
+            account_user
+        WHERE
+            username=#{username}
+    </select>
+
+</mapper>

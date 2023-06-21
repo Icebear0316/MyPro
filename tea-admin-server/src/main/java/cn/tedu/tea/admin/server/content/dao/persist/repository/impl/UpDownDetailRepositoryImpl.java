@@ -9,6 +9,8 @@ import org.springframework.stereotype.Repository;
 /**
  * 处理顶踩日志数据的存储库实现类
  *
+ * @author java@tedu.cn
+ * @version 1.0
  */
 @Slf4j
 @Repository
