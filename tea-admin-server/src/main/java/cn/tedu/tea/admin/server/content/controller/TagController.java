@@ -17,6 +17,8 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,7 +31,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RestController
 @RequestMapping("/content/tags")
-@Api(tags = "1.1. 内容管理-标签管理")
+@Api(tags = "2.1. 内容管理-标签管理")
 @Validated
 public class TagController {
 
@@ -45,6 +47,7 @@ public class TagController {
     @ApiOperation("新增标签类别")
     @ApiOperationSupport(order = 100)
     @PostMapping("/type/add-new")
+    @PreAuthorize("hasAuthority('/content/tag/add-new')")
     public JsonResult addNew(@Validated TagTypeAddNewParam tagTypeAddNewParam) {
         log.debug("开始处理【新增标签类别】的请求，参数：{}", tagTypeAddNewParam);
         tagService.addNew(tagTypeAddNewParam);
@@ -54,6 +57,8 @@ public class TagController {
     @ApiOperation("新增标签")
     @ApiOperationSupport(order = 110)
     @PostMapping("/add-new")
+    @PreAuthorize("hasAuthority('/content/tag/add-new')") // 执行方法之前检查权限
+    // @PostAuthorize() // 执行方法之后检查权限
     public JsonResult addNew(@Validated TagAddNewParam tagAddNewParam) {
         log.debug("开始处理【新增标签】的请求，参数：{}", tagAddNewParam);
         tagService.addNew(tagAddNewParam);
@@ -66,6 +71,7 @@ public class TagController {
             @ApiImplicitParam(name = "id", value = "标签ID", required = true, dataType = "long")
     })
     @PostMapping("/{id:[0-9]+}/delete")
+    @PreAuthorize("hasAuthority('/content/tag/delete')")
     public JsonResult delete(@PathVariable @Range(min = 1, message = "删除标签失败，请提交合法的ID值！") Long id) {
         log.debug("开始处理【删除标签】的请求，参数：{}", id);
         tagService.delete(id);
@@ -75,6 +81,7 @@ public class TagController {
     @ApiOperation("修改标签")
     @ApiOperationSupport(order = 300)
     @PostMapping("/{id:[0-9]+}/update/info")
+    @PreAuthorize("hasAuthority('/content/tag/update')")
     public JsonResult updateInfoById(@Validated TagUpdateInfoParam tagUpdateInfoParam) {
         log.debug("开始处理【修改标签】的请求，参数：{}", tagUpdateInfoParam);
         tagService.updateInfoById(tagUpdateInfoParam);
@@ -87,6 +94,7 @@ public class TagController {
             @ApiImplicitParam(name = "id", value = "标签ID", required = true, dataType = "long")
     })
     @PostMapping("/{id:[0-9]+}/enable")
+    @PreAuthorize("hasAuthority('/content/tag/update')")
     public JsonResult setEnable(@PathVariable @Range(min = 1, message = "启用标签失败，请提交合法的ID值！") Long id) {
         log.debug("开始处理【启用标签】的请求，参数：{}", id);
         tagService.setEnable(id);
@@ -99,6 +107,7 @@ public class TagController {
             @ApiImplicitParam(name = "id", value = "标签ID", required = true, dataType = "long")
     })
     @PostMapping("/{id:[0-9]+}/disable")
+    @PreAuthorize("hasAuthority('/content/tag/update')")
     public JsonResult setDisable(@PathVariable @Range(min = 1, message = "禁用标签失败，请提交合法的ID值！") Long id) {
         log.debug("开始处理【禁用标签】的请求，参数：{}", id);
         tagService.setDisable(id);
@@ -111,6 +120,7 @@ public class TagController {
             @ApiImplicitParam(name = "id", value = "标签ID", required = true, dataType = "long")
     })
     @GetMapping("/{id:[0-9]+}")
+    @PreAuthorize("hasAuthority('/content/tag/read')")
     public JsonResult getStandardById(@PathVariable @Range(min = 1, message = "获取标签详情失败，请提交合法的ID值！") Long id) {
         log.debug("开始处理【根据ID查询标签】的请求，参数：{}", id);
         TagStandardVO tag = tagService.getStandardById(id);
@@ -124,6 +134,7 @@ public class TagController {
         @ApiImplicitParam(name = "queryType", value = "查询类型，当需要查询全部数据时，此参数值应该是all")
     })
     @GetMapping("/type/list")
+    @PreAuthorize("hasAuthority('/content/tag/read')")
     public JsonResult listTagType(Integer page, String queryType) {
         log.debug("开始处理【查询标签类别列表】请求，页码：{}", page);
         if (page == null) {
@@ -146,6 +157,7 @@ public class TagController {
             @ApiImplicitParam(name = "queryType", value = "查询类型，当需要查询全部数据时，此参数值应该是all")
     })
     @GetMapping("")
+    @PreAuthorize("hasAuthority('/content/tag/read')")
     public JsonResult list(Integer page, String queryType) {
         log.debug("开始处理【查询标签类别列表】请求，页码：{}", page);
         if (page == null) {

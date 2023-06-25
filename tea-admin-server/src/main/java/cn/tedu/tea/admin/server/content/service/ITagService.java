@@ -83,7 +83,7 @@ public interface ITagService {
      * 根据ID查询标签
      *
      * @param id 标签ID
-     * @return 匹配的标签，如果没有匹配的数据，则返回null
+     * @return 匹配的标签
      */
     TagStandardVO getStandardById(Long id);
 

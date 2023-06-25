@@ -7,11 +7,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 
@@ -29,7 +30,12 @@ import java.io.PrintWriter;
  */
 @Slf4j
 @Configuration
+@EnableGlobalMethodSecurity(prePostEnabled = true) // 开启基于方法的安全检查
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+
+    public SecurityConfiguration() {
+        log.debug("创建配置类对象：SecurityConfiguration");
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -45,10 +51,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        // 允许跨域访问
+        http.cors();
+
         // 处理“无认证信息却访问需要认证的资源时”的响应
         http.exceptionHandling().authenticationEntryPoint(new AuthenticationEntryPoint() {
             @Override
             public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException e) throws IOException, ServletException {
+                log.debug("认证信息：{}", SecurityContextHolder.getContext().getAuthentication());
+                log.debug("{}", e);
                 response.setContentType("application/json; charset=utf-8");
                 String message = "操作失败，您当前未登录！";
                 JsonResult jsonResult = JsonResult.fail(ServiceCode.ERROR_UNAUTHORIZED, message);
