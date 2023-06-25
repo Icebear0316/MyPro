@@ -49,15 +49,19 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             authorities.add(authority);
         }
 
-        UserDetails userDetails = User.builder()
-                .username(loginInfo.getUsername())
-                .password(loginInfo.getPassword()) // 密文
-                .disabled(loginInfo.getEnable() == 0) // 账号是否被禁用
-                .accountLocked(false) // 账号是否被锁定，当前项目中无此概念，则所有账号的此属性都是false
-                .accountExpired(false) // 账号是否过期，当前项目中无此概念，则所有账号的此属性都是false
-                .credentialsExpired(false) // 凭证是否过期，当前项目中无此概念，则所有账号的此属性都是false
-                .authorities(authorities)
-                .build();
+        CustomUserDetails userDetails = new CustomUserDetails(
+                loginInfo.getId(), loginInfo.getUsername(), loginInfo.getPassword(),
+                loginInfo.getAvatar(), loginInfo.getEnable() == 1, authorities);
+
+        //UserDetails userDetails = User.builder()
+        //        .username(loginInfo.getUsername())
+        //        .password(loginInfo.getPassword()) // 密文
+        //        .disabled(loginInfo.getEnable() == 0) // 账号是否被禁用
+        //        .accountLocked(false) // 账号是否被锁定，当前项目中无此概念，则所有账号的此属性都是false
+        //        .accountExpired(false) // 账号是否过期，当前项目中无此概念，则所有账号的此属性都是false
+        //        .credentialsExpired(false) // 凭证是否过期，当前项目中无此概念，则所有账号的此属性都是false
+        //        .authorities(authorities)
+        //        .build();
         log.debug("即将向Spring Security框架返回UserDetails类型的结果：{}", userDetails);
         log.debug("接下来，将由Spring Security框架自动验证用户状态、密码等，以判断是否可以成功登录！");
         return userDetails;

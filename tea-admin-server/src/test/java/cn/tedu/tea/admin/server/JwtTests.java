@@ -45,7 +45,7 @@ public class JwtTests {
 
     @Test
     void parse() {
-        String jwt = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpdGllc0pzb25TdHJpbmciOiJbe1wiYXV0aG9yaXR5XCI6XCIvYWNjb3VudC91c2VyL2FkZC1uZXdcIn0se1wiYXV0aG9yaXR5XCI6XCIvYWNjb3VudC91c2VyL2RlbGV0ZVwifSx7XCJhdXRob3JpdHlcIjpcIi9hY2NvdW50L3VzZXIvcmVhZFwifSx7XCJhdXRob3JpdHlcIjpcIi9hY2NvdW50L3VzZXIvdXBkYXRlXCJ9LHtcImF1dGhvcml0eVwiOlwiL2NvbnRlbnQvY2F0ZWdvcnkvYWRkLW5ld1wifSx7XCJhdXRob3JpdHlcIjpcIi9jb250ZW50L2NhdGVnb3J5L2RlbGV0ZVwifSx7XCJhdXRob3JpdHlcIjpcIi9jb250ZW50L2NhdGVnb3J5L3JlYWRcIn0se1wiYXV0aG9yaXR5XCI6XCIvY29udGVudC9jYXRlZ29yeS91cGRhdGVcIn0se1wiYXV0aG9yaXR5XCI6XCIvY29udGVudC90YWcvYWRkLW5ld1wifSx7XCJhdXRob3JpdHlcIjpcIi9jb250ZW50L3RhZy9kZWxldGVcIn0se1wiYXV0aG9yaXR5XCI6XCIvY29udGVudC90YWcvcmVhZFwifSx7XCJhdXRob3JpdHlcIjpcIi9jb250ZW50L3RhZy91cGRhdGVcIn1dIiwiZXhwIjoxNjkwMjc0NTA5LCJ1c2VybmFtZSI6InJvb3QifQ.Y63XUBFTFicC0exBvfNqWckFqSbZjG3XW76HPV7KsgI";
+        String jwt = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiYXZhdGFyIjoiaHR0cHM6Ly9pbWcxLmJhaWR1LmNvbS9pdC91PTE3MjAzMzc1NywyMzk4MjkwNzY3JmZtPTI1MyZmbXQ9YXV0byZhcHA9MTM4JmY9SlBFRz93PTUwMCZoPTUwMCIsImF1dGhvcml0aWVzSnNvblN0cmluZyI6Ilt7XCJhdXRob3JpdHlcIjpcIi9hY2NvdW50L3VzZXIvYWRkLW5ld1wifSx7XCJhdXRob3JpdHlcIjpcIi9hY2NvdW50L3VzZXIvZGVsZXRlXCJ9LHtcImF1dGhvcml0eVwiOlwiL2FjY291bnQvdXNlci9yZWFkXCJ9LHtcImF1dGhvcml0eVwiOlwiL2FjY291bnQvdXNlci91cGRhdGVcIn0se1wiYXV0aG9yaXR5XCI6XCIvY29udGVudC9jYXRlZ29yeS9hZGQtbmV3XCJ9LHtcImF1dGhvcml0eVwiOlwiL2NvbnRlbnQvY2F0ZWdvcnkvZGVsZXRlXCJ9LHtcImF1dGhvcml0eVwiOlwiL2NvbnRlbnQvY2F0ZWdvcnkvcmVhZFwifSx7XCJhdXRob3JpdHlcIjpcIi9jb250ZW50L2NhdGVnb3J5L3VwZGF0ZVwifSx7XCJhdXRob3JpdHlcIjpcIi9jb250ZW50L3RhZy9hZGQtbmV3XCJ9LHtcImF1dGhvcml0eVwiOlwiL2NvbnRlbnQvdGFnL2RlbGV0ZVwifSx7XCJhdXRob3JpdHlcIjpcIi9jb250ZW50L3RhZy9yZWFkXCJ9LHtcImF1dGhvcml0eVwiOlwiL2NvbnRlbnQvdGFnL3VwZGF0ZVwifV0iLCJleHAiOjE2OTAyNzYzMDksInVzZXJuYW1lIjoicm9vdCJ9.BGb8_LiDy3nVEPHdqe-St4KIx-7wVUjlVf0fXV73X8w";
 
         Claims claims = Jwts.parser()
                 .setSigningKey(secretKey)
@@ -53,9 +53,11 @@ public class JwtTests {
                 .getBody();
         Long id = claims.get("id", Long.class);
         String username = claims.get("username", String.class);
+        String avatar = claims.get("avatar", String.class);
         String authoritiesJsonString = claims.get("authoritiesJsonString", String.class);
         System.out.println("id = " + id);
         System.out.println("username = " + username);
+        System.out.println("avatar = " + avatar);
         System.out.println("authoritiesJsonString = " + authoritiesJsonString);
 
         List<SimpleGrantedAuthority> authorities

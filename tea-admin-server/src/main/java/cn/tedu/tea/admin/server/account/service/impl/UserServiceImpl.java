@@ -8,6 +8,7 @@ import cn.tedu.tea.admin.server.account.pojo.param.UserAddNewParam;
 import cn.tedu.tea.admin.server.account.pojo.param.UserLoginInfoParam;
 import cn.tedu.tea.admin.server.account.pojo.vo.UserListItemVO;
 import cn.tedu.tea.admin.server.account.pojo.vo.UserStandardVO;
+import cn.tedu.tea.admin.server.account.security.CustomUserDetails;
 import cn.tedu.tea.admin.server.account.service.IUserService;
 import cn.tedu.tea.admin.server.common.ex.ServiceException;
 import cn.tedu.tea.admin.server.common.pojo.vo.PageData;
@@ -68,9 +69,13 @@ public class UserServiceImpl implements IUserService {
 
         Object principal = authenticateResult.getPrincipal();
         log.debug("从认证结果中获取当事人：{}", principal);
-        UserDetails userDetails = (UserDetails) principal;
+        CustomUserDetails userDetails = (CustomUserDetails) principal;
+        Long id = userDetails.getId();
+        log.debug("从认证结果中的当事人中获取ID：{}", id);
         String username = userDetails.getUsername();
         log.debug("从认证结果中的当事人中获取用户名：{}", username);
+        String avatar = userDetails.getAvatar();
+        log.debug("从认证结果中的当事人中获取头像：{}", avatar);
         Collection<? extends GrantedAuthority> authorities = userDetails.getAuthorities();
         log.debug("从认证结果中的当事人中获取权限列表：{}", authorities);
         String authoritiesJsonString = JSON.toJSONString(authorities);
@@ -80,7 +85,9 @@ public class UserServiceImpl implements IUserService {
         //                                                  ↑ 注意加L，避免int溢出为负数
         String secretKey = "fNesMDkqrJFdsfDSwAbFLJ8SnsHJ438AF72D73aKJSmfdsafdLKKAFKDSJ";
         Map<String, Object> claims = new HashMap<>();
+        claims.put("id", id);
         claims.put("username", username);
+        claims.put("avatar", avatar);
         claims.put("authoritiesJsonString", authoritiesJsonString);
         String jwt = Jwts.builder()
                 .setHeaderParam("alg", "HS256")
