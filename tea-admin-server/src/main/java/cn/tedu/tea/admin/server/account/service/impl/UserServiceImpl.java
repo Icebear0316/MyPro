@@ -12,6 +12,9 @@ import cn.tedu.tea.admin.server.account.service.IUserService;
 import cn.tedu.tea.admin.server.common.ex.ServiceException;
 import cn.tedu.tea.admin.server.common.pojo.vo.PageData;
 import cn.tedu.tea.admin.server.common.web.ServiceCode;
+import com.alibaba.fastjson.JSON;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +22,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * 处理用户数据的业务实现类
@@ -53,7 +57,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public void login(UserLoginInfoParam userLoginInfoParam) {
+    public String login(UserLoginInfoParam userLoginInfoParam) {
         log.debug("开始处理【用户登录】的业务，参数：{}", userLoginInfoParam);
         Authentication authentication = new UsernamePasswordAuthenticationToken(
                 userLoginInfoParam.getUsername(), userLoginInfoParam.getPassword());
@@ -62,10 +66,35 @@ public class UserServiceImpl implements IUserService {
                 = authenticationManager.authenticate(authentication);
         log.debug("验证用户登录成功，返回的认证结果：{}", authenticateResult);
 
-        log.debug("准备将认证信息结果存入到SecurityContext中……");
-        SecurityContext securityContext = SecurityContextHolder.getContext();
-        securityContext.setAuthentication(authenticateResult);
-        log.debug("已经将认证信息存入到SecurityContext中，登录业务处理完成！");
+        Object principal = authenticateResult.getPrincipal();
+        log.debug("从认证结果中获取当事人：{}", principal);
+        UserDetails userDetails = (UserDetails) principal;
+        String username = userDetails.getUsername();
+        log.debug("从认证结果中的当事人中获取用户名：{}", username);
+        Collection<? extends GrantedAuthority> authorities = userDetails.getAuthorities();
+        log.debug("从认证结果中的当事人中获取权限列表：{}", authorities);
+        String authoritiesJsonString = JSON.toJSONString(authorities);
+        log.debug("将权限列表对象转换为JSON格式的字符串：{}", authoritiesJsonString);
+
+        Date date = new Date(System.currentTimeMillis() + 30L * 24 * 60 * 60 * 1000);
+        //                                                  ↑ 注意加L，避免int溢出为负数
+        String secretKey = "fNesMDkqrJFdsfDSwAbFLJ8SnsHJ438AF72D73aKJSmfdsafdLKKAFKDSJ";
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("username", username);
+        claims.put("authoritiesJsonString", authoritiesJsonString);
+        String jwt = Jwts.builder()
+                .setHeaderParam("alg", "HS256")
+                .setHeaderParam("typ", "JWT")
+                .setClaims(claims)
+                .setExpiration(date)
+                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .compact();
+        return jwt;
+        // 改为使用JWT后，不必在登录成功后就将认证信息存入到SecurityContext中
+        // log.debug("准备将认证信息结果存入到SecurityContext中……");
+        // SecurityContext securityContext = SecurityContextHolder.getContext();
+        // securityContext.setAuthentication(authenticateResult);
+        // log.debug("已经将认证信息存入到SecurityContext中，登录业务处理完成！");
     }
 
     @Override

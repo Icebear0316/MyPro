@@ -47,8 +47,8 @@ public class UserController {
     @ApiOperationSupport(order = 10)
     public JsonResult login(@Validated UserLoginInfoParam userLoginInfoParam) {
         log.debug("开始处理【用户登录】的请求，参数：{}", userLoginInfoParam);
-        userService.login(userLoginInfoParam);
-        return JsonResult.ok();
+        String jwt = userService.login(userLoginInfoParam);
+        return JsonResult.ok(jwt);
     }
 
     @PostMapping("/logout")

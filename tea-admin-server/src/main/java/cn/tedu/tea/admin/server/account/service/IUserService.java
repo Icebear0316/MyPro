@@ -25,8 +25,9 @@ public interface IUserService {
      * 用户登录
      *
      * @param userLoginInfoParam 封装了登录信息的对象
+     * @return 成功登录的用户的JWT
      */
-    void login(UserLoginInfoParam userLoginInfoParam);
+    String login(UserLoginInfoParam userLoginInfoParam);
 
     /**
      * 添加用户
