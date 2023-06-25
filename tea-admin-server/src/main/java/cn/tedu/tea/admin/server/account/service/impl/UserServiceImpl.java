@@ -106,7 +106,6 @@ public class UserServiceImpl implements IUserService {
         }
 
         User user = new User();
-        // 复制属性
         BeanUtils.copyProperties(userAddNewParam, user);
         user.setLoginCount(0);
         String rawPassword = user.getPassword();
@@ -133,7 +132,6 @@ public class UserServiceImpl implements IUserService {
             log.warn(message);
             throw new ServiceException(ServiceCode.ERROR_INSERT, message);
         }
-
     }
 
     @Override
