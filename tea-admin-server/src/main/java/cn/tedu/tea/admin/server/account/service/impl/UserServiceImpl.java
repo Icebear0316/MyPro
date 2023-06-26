@@ -7,6 +7,7 @@ import cn.tedu.tea.admin.server.account.pojo.entity.UserRole;
 import cn.tedu.tea.admin.server.account.pojo.param.UserAddNewParam;
 import cn.tedu.tea.admin.server.account.pojo.param.UserLoginInfoParam;
 import cn.tedu.tea.admin.server.account.pojo.vo.UserListItemVO;
+import cn.tedu.tea.admin.server.account.pojo.vo.UserLoginResultVO;
 import cn.tedu.tea.admin.server.account.pojo.vo.UserStandardVO;
 import cn.tedu.tea.admin.server.account.security.CustomUserDetails;
 import cn.tedu.tea.admin.server.account.service.IUserService;
@@ -59,7 +60,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public String login(UserLoginInfoParam userLoginInfoParam) {
+    public UserLoginResultVO login(UserLoginInfoParam userLoginInfoParam) {
         log.debug("开始处理【用户登录】的业务，参数：{}", userLoginInfoParam);
         Authentication authentication = new UsernamePasswordAuthenticationToken(
                 userLoginInfoParam.getUsername(), userLoginInfoParam.getPassword());
@@ -87,7 +88,6 @@ public class UserServiceImpl implements IUserService {
         Map<String, Object> claims = new HashMap<>();
         claims.put("id", id);
         claims.put("username", username);
-        claims.put("avatar", avatar);
         claims.put("authoritiesJsonString", authoritiesJsonString);
         String jwt = Jwts.builder()
                 .setHeaderParam("alg", "HS256")
@@ -96,7 +96,13 @@ public class UserServiceImpl implements IUserService {
                 .setExpiration(date)
                 .signWith(SignatureAlgorithm.HS256, secretKey)
                 .compact();
-        return jwt;
+
+        UserLoginResultVO userLoginResultVO = new UserLoginResultVO()
+                .setId(id)
+                .setUsername(username)
+                .setAvatar(avatar)
+                .setToken(jwt);
+        return userLoginResultVO;
         // 改为使用JWT后，不必在登录成功后就将认证信息存入到SecurityContext中
         // log.debug("准备将认证信息结果存入到SecurityContext中……");
         // SecurityContext securityContext = SecurityContextHolder.getContext();

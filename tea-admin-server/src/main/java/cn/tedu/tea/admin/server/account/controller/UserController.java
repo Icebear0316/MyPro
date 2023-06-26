@@ -3,6 +3,7 @@ package cn.tedu.tea.admin.server.account.controller;
 import cn.tedu.tea.admin.server.account.pojo.param.UserAddNewParam;
 import cn.tedu.tea.admin.server.account.pojo.param.UserLoginInfoParam;
 import cn.tedu.tea.admin.server.account.pojo.vo.UserListItemVO;
+import cn.tedu.tea.admin.server.account.pojo.vo.UserLoginResultVO;
 import cn.tedu.tea.admin.server.account.pojo.vo.UserStandardVO;
 import cn.tedu.tea.admin.server.account.service.IUserService;
 import cn.tedu.tea.admin.server.common.pojo.vo.PageData;
@@ -47,8 +48,8 @@ public class UserController {
     @ApiOperationSupport(order = 10)
     public JsonResult login(@Validated UserLoginInfoParam userLoginInfoParam) {
         log.debug("开始处理【用户登录】的请求，参数：{}", userLoginInfoParam);
-        String jwt = userService.login(userLoginInfoParam);
-        return JsonResult.ok(jwt);
+        UserLoginResultVO userLoginResultVO = userService.login(userLoginInfoParam);
+        return JsonResult.ok(userLoginResultVO);
     }
 
     @PostMapping("/logout")

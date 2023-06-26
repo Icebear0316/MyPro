@@ -1,21 +1,22 @@
 package cn.tedu.tea.admin.server.account.pojo.vo;
 
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
- * 用户登录信息的VO类
+ * 用户登录结果的VO类
  *
  * @author java@tedu.cn
  * @version 1.0
  */
 @Data
-public class UserLoginInfoVO implements Serializable {
+@Accessors(chain = true)
+public class UserLoginResultVO implements Serializable {
 
     /**
-     * 数据id
+     * 用户ID
      */
     private Long id;
     /**
@@ -23,24 +24,12 @@ public class UserLoginInfoVO implements Serializable {
      */
     private String username;
     /**
-     * 密码（密文）
-     */
-    private String password;
-    /**
-     * 昵称
-     */
-    private String nickname;
-    /**
-     * 头像URL
+     * 头像
      */
     private String avatar;
     /**
-     * 是否启用，1=启用，0=未启用
+     * Token（JWT）
      */
-    private Integer enable;
-    /**
-     * 权限列表
-     */
-    private List<String> permissions;
+    private String token;
 
 }

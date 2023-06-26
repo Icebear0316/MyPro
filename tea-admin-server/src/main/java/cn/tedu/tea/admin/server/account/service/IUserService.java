@@ -3,6 +3,7 @@ package cn.tedu.tea.admin.server.account.service;
 import cn.tedu.tea.admin.server.account.pojo.param.UserAddNewParam;
 import cn.tedu.tea.admin.server.account.pojo.param.UserLoginInfoParam;
 import cn.tedu.tea.admin.server.account.pojo.vo.UserListItemVO;
+import cn.tedu.tea.admin.server.account.pojo.vo.UserLoginResultVO;
 import cn.tedu.tea.admin.server.account.pojo.vo.UserStandardVO;
 import cn.tedu.tea.admin.server.common.pojo.vo.PageData;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,9 +26,9 @@ public interface IUserService {
      * 用户登录
      *
      * @param userLoginInfoParam 封装了登录信息的对象
-     * @return 成功登录的用户的JWT
+     * @return 成功登录的用户的信息，包括：ID、用户名、头像、JWT等数据
      */
-    String login(UserLoginInfoParam userLoginInfoParam);
+    UserLoginResultVO login(UserLoginInfoParam userLoginInfoParam);
 
     /**
      * 添加用户
