@@ -21,7 +21,7 @@ spring:
     druid:
       # 初始化连接数量
       initial-size: 5
-      # 最大激活数量
+      #                                                     最大激活数量
       max-active: 20
 
 # 日志配置

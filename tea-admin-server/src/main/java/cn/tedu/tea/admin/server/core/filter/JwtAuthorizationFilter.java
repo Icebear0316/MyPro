@@ -12,6 +12,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.*;
@@ -38,6 +39,8 @@ import java.util.List;
 @Component
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
+    public static final int JWT_MIN_LENGTH = 113;
+
     public JwtAuthorizationFilter() {
         log.info("创建过滤器对象：JwtAuthorizationFilter");
     }
@@ -51,7 +54,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         log.debug("客户端携带的JWT：{}", jwt);
 
         // 判断JWT的基本有效性（没有必要尝试解析格式明显错误的JWT数据）
-        if (jwt == null || jwt.length() < 113) {
+        if (!StringUtils.hasText(jwt) || jwt.length() < JWT_MIN_LENGTH) {
             // 对于无效的JWT，应该直接放行
             log.warn("当前请求中，客户端没有携带有效的JWT，将放行");
             filterChain.doFilter(request, response);
