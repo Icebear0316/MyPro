@@ -17,8 +17,9 @@ public class JwtTests {
     void generate() {
         // 注意：即使不知道正确的Secret Key，JWT数据也是可以被解析的，所以，不要在JWT中存放敏感数据
         Map<String, Object> claims = new HashMap<>();
-        claims.put("id", 997);
-        claims.put("username", "XiaoPangDun");
+        claims.put("i", 1);
+        // claims.put("id", 997);
+        // claims.put("username", "XiaoPangDun");
 
         Date date = new Date(System.currentTimeMillis() + 30L * 24 * 60 * 60 * 1000);
         //                                                  ↑ 注意加L，避免int溢出为负数
