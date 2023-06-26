@@ -21,7 +21,7 @@ spring:
     druid:
       # 初始化连接数量
       initial-size: 5
-      #                                                     最大激活数量
+      # 最大激活数量
       max-active: 20
 
 # 日志配置
@@ -37,3 +37,9 @@ tea-store:
   dao:
     # 查询数据时，默认的每页记录数，建议值为10~30之间
     default-query-page-size: 5
+  # JWT的配置
+  jwt:
+    # JWT的有效时长，以分钟为单位
+    duration-in-minute: 86400
+    # JWT的secretKey
+    secret-key: fNesMDkqrJFdsfDSwAbFLJ8SnsHJ438AF72D73aKJSmfdsafdLKKAFKDSJ

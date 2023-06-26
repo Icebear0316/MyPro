@@ -24,9 +24,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -44,6 +41,10 @@ public class UserServiceImpl implements IUserService {
 
     @Value("${tea-store.dao.default-query-page-size}")
     private Integer defaultQueryPageSize;
+    @Value("${tea-store.jwt.secret-key}")
+    private String secretKey;
+    @Value("${tea-store.jwt.duration-in-minute}")
+    private long durationInMinute;
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
@@ -81,9 +82,8 @@ public class UserServiceImpl implements IUserService {
         String authoritiesJsonString = JSON.toJSONString(authorities);
         log.debug("将权限列表对象转换为JSON格式的字符串：{}", authoritiesJsonString);
 
-        Date date = new Date(System.currentTimeMillis() + 30L * 24 * 60 * 60 * 1000);
-        //                                                  ↑ 注意加L，避免int溢出为负数
-        String secretKey = "fNesMDkqrJFdsfDSwAbFLJ8SnsHJ438AF72D73aKJSmfdsafdLKKAFKDSJ";
+        Date date = new Date(System.currentTimeMillis() + 1L * 60 * 1000 * durationInMinute);
+        //                                                 ↑ 注意加L，避免int溢出为负数
         Map<String, Object> claims = new HashMap<>();
         claims.put("id", id);
         claims.put("username", username);

@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -59,6 +60,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        // 配置Security框架不使用Session
+        // SessionCreationPolicy.NEVER：从不主动创建Session，但是，Session存在的话，会自动使用
+        // SessionCreationPolicy.STATELESS：无状态，无论是否存在Session，都不使用
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
         // 将自定义的解析JWT的过滤器添加到Security框架的过滤器链中
         // 必须添加在检查SecurityContext的Authentication之前，具体位置并不严格要求
         http.addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
@@ -70,8 +76,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.exceptionHandling().authenticationEntryPoint(new AuthenticationEntryPoint() {
             @Override
             public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException e) throws IOException, ServletException {
-                log.debug("认证信息：{}", SecurityContextHolder.getContext().getAuthentication());
-                log.debug("{}", e);
+                log.warn("{}", e);
                 response.setContentType("application/json; charset=utf-8");
                 String message = "操作失败，您当前未登录！";
                 JsonResult jsonResult = JsonResult.fail(ServiceCode.ERROR_UNAUTHORIZED, message);
