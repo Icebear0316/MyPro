@@ -2,19 +2,23 @@ package cn.tedu.tea.admin.server.core.config;
 
 import cn.tedu.tea.admin.server.common.web.JsonResult;
 import cn.tedu.tea.admin.server.common.web.ServiceCode;
+import cn.tedu.tea.admin.server.core.filter.JwtAuthorizationFilter;
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -31,7 +35,11 @@ import java.io.PrintWriter;
 @Slf4j
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true) // 开启基于方法的安全检查
+// @EnableWebSecurity(debug = true) // 开启调试模式，在控制台将显示很多日志，在生产环境中不宜开启
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    private JwtAuthorizationFilter jwtAuthorizationFilter;
 
     public SecurityConfiguration() {
         log.debug("创建配置类对象：SecurityConfiguration");
@@ -51,7 +59,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        // 允许跨域访问
+        // 将自定义的解析JWT的过滤器添加到Security框架的过滤器链中
+        // 必须添加在检查SecurityContext的Authentication之前，具体位置并不严格要求
+        http.addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
+
+        // 允许跨域访问，本质上是启用了Security框架自带的CorsFilter
         http.cors();
 
         // 处理“无认证信息却访问需要认证的资源时”的响应
