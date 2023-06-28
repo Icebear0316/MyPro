@@ -94,7 +94,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 "/**/*.js",
                 "/swagger-resources",
                 "/v2/api-docs",
-                "/account/users/login"
+                "/resources/**", // 静态资源文件夹，通常是上传的文件，请与配置文件中的"tea-store.upload.base-dir-name"一致
+                "/account/users/login" // 用户登录
         };
 
         // 禁用“防止伪造的跨域攻击的防御机制”
