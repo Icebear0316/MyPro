@@ -34,7 +34,7 @@ import springfox.documentation.annotations.ApiIgnore;
 @Slf4j
 @RestController
 @RequestMapping("/content/tags")
-@Api(tags = "2.1. 内容管理-标签管理")
+@Api(tags = "2.2. 内容管理-标签管理")
 @Validated
 public class TagController {
 
@@ -45,8 +45,6 @@ public class TagController {
         log.info("创建控制器对象：TagController");
     }
 
-    // 添加@RequestBody：接收对象参数
-    // 不添加@RequestBody：接收FormData参数
     @ApiOperation("新增标签类别")
     @ApiOperationSupport(order = 100)
     @PostMapping("/type/add-new")
