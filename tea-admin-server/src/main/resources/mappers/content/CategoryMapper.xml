@@ -3,16 +3,56 @@
 
 <mapper namespace="cn.tedu.tea.admin.server.content.dao.persist.mapper.CategoryMapper">
 
+    <!-- int insertBatch(List<Category> categories); -->
+    <insert id="insertBatch" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO content_category (
+            name, parent_id, depth, keywords, sort,
+            icon, enable, is_parent, is_display
+        ) VALUES
+        <foreach collection="list" item="category" separator=",">
+            (#{category.name}, #{category.parentId}, #{category.depth}, #{category.keywords}, #{category.sort},
+            #{category.icon}, #{category.enable}, #{category.isParent}, #{category.isDisplay})
+        </foreach>
+    </insert>
+
     <!-- CategoryStandardVO getStandardById(Long id); -->
     <select id="getStandardById" resultMap="StandardResultMap">
         SELECT
-            id, name, parent_id, depth, keywords,
-            sort, icon, enable, is_parent, is_display
+            <include refid="StandardQueryFields"/>
         FROM
             content_category
         WHERE
             id=#{id}
     </select>
+
+    <!-- List<CategoryListItemVO> list(); -->
+    <select id="list" resultMap="ListResultMap">
+        SELECT
+            <include refid="ListQueryFields"/>
+        FROM
+            content_category
+        ORDER BY
+            sort DESC, id DESC
+    </select>
+
+    <!-- List<CategoryListItemVO> listByParentId(Long parentId); -->
+    <select id="listByParentId" resultMap="ListResultMap">
+        SELECT
+            <include refid="ListQueryFields"/>
+        FROM
+            content_category
+        WHERE
+            parent_id=#{parentId}
+        ORDER BY
+            sort DESC, id DESC
+    </select>
+
+    <sql id="StandardQueryFields">
+        <if test="true">
+            id, name, parent_id, depth, keywords,
+            sort, icon, enable, is_parent, is_display
+        </if>
+    </sql>
 
     <resultMap id="StandardResultMap"
                type="cn.tedu.tea.admin.server.content.pojo.vo.CategoryStandardVO">
@@ -24,7 +64,27 @@
         <result column="sort" property="sort"/>
         <result column="icon" property="icon"/>
         <result column="enable" property="enable"/>
+        <result column="is_parent" property="isParent"/>
+        <result column="is_display" property="isDisplay"/>
+    </resultMap>
+
+    <sql id="ListQueryFields">
+        <if test="true">
+            id, name, parent_id, depth, keywords,
+            sort, icon, enable, is_parent, is_display
+        </if>
+    </sql>
+
+    <resultMap id="ListResultMap"
+               type="cn.tedu.tea.admin.server.content.pojo.vo.CategoryListItemVO">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="parent_id" property="parentId"/>
+        <result column="depth" property="depth"/>
+        <result column="keywords" property="keywords"/>
         <result column="sort" property="sort"/>
+        <result column="icon" property="icon"/>
+        <result column="enable" property="enable"/>
         <result column="is_parent" property="isParent"/>
         <result column="is_display" property="isDisplay"/>
     </resultMap>

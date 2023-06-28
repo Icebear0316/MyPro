@@ -1,5 +1,6 @@
 package cn.tedu.tea.admin.server.core.filter;
 
+import cn.tedu.tea.admin.server.common.consts.HttpConsts;
 import cn.tedu.tea.admin.server.common.security.CurrentPrincipal;
 import cn.tedu.tea.admin.server.common.web.JsonResult;
 import cn.tedu.tea.admin.server.common.web.ServiceCode;
@@ -39,7 +40,7 @@ import java.util.List;
  */
 @Slf4j
 @Component
-public class JwtAuthorizationFilter extends OncePerRequestFilter {
+public class JwtAuthorizationFilter extends OncePerRequestFilter implements HttpConsts {
 
     @Value("${tea-store.jwt.secret-key}")
     private String secretKey;
@@ -58,7 +59,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         log.debug("处理JWT的过滤器开始处理当前请求……");
         // 尝试接收客户端的请求中携带的JWT数据
         // 业内惯用的做法是：客户端会将JWT放在请求头中名为Authorization的属性中
-        String jwt = request.getHeader("Authorization");
+        String jwt = request.getHeader(HEADER_AUTHORIZATION);
         log.debug("客户端携带的JWT：{}", jwt);
 
         // 判断JWT的基本有效性（没有必要尝试解析格式明显错误的JWT数据）

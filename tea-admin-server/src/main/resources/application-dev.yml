@@ -23,6 +23,20 @@ spring:
       initial-size: 5
       # 最大激活数量
       max-active: 20
+  # servlet配置
+  servlet:
+    # 上传配置
+    multipart:
+      # 最大文件尺寸
+      max-file-size: 500MB
+      # 最大请求尺寸
+      max-request-size: 500MB
+  # WEB配置
+  web:
+    # 静态资源配置
+    resources:
+      # 静态资源文件夹，如果多个，使用英文的逗号分隔，本地路径必须使用 file: 作为前缀
+      static-locations: classpath:static, file:${tea-store.upload.root-dir-name}
 
 # 日志配置
 logging:
@@ -43,3 +57,18 @@ tea-store:
     duration-in-minute: 86400
     # JWT的secretKey
     secret-key: fNesMDkqrJFdsfDSwAbFLJ8SnsHJ438AF72D73aKJSmfdsafdLKKAFKDSJ
+  # 文件上传
+  upload:
+    # 对外访问的主机，必须使用 / 作为最后一个字符
+    host: http://localhost:${server.port}/
+    # 上传的根级文件夹名称，必须使用 / 作为最后一个字符
+    root-dir-name: C:/Users/TEACHER/Desktop/
+    # root-dir-name: /Users/chengheng/Desktop/JSD2023
+    # 上传的文件夹名称，也会作为访问资源时的URL第1级目录名，必须使用 / 作为最后一个字符
+    base-dir-name: resources/
+    # 文章图片
+    article-image:
+      # 允许的文件类型，必须配置文件类型的MIME值，多种类型使用英文的逗号分隔
+      types: image/jpeg, image/png, image/gif
+      # 最大尺寸，单位：MB
+      max-size: 5
