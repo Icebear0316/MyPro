@@ -195,7 +195,7 @@ public class UserServiceImpl implements IUserService {
         }
 
         log.debug("即将执行删除关联数据，参数：{}", id);
-        rows = userRoleRepository.deleteByAdminId(id);
+        rows = userRoleRepository.deleteByUserId(id);
         if (rows < 1) {
             String message = "删除用户失败，服务器忙，请稍后再尝试！";
             log.warn(message);
