@@ -23,8 +23,8 @@ public interface IUserRoleRepository {
     /**
      * 根据用户id删除用户与角色的关联数据
      *
-     * @param adminId 用户id
+     * @param userId 用户id
      * @return 受影响的行数
      */
-    int deleteByAdminId(Long adminId);
+    int deleteByUserId(Long userId);
 }
