@@ -81,5 +81,9 @@ public class ArticleStandardVO implements Serializable {
      * 显示状态，0=不显示，1=显示
      */
     private Integer displayState;
+    /**
+     * 详情
+     */
+    private String detail;
 
 }
