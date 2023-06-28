@@ -1,5 +1,6 @@
 package cn.tedu.tea.admin.server.account.security;
 
+import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
